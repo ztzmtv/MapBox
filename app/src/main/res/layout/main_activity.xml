@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@color/dark_blue"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabMode="scrollable"
+        app:tabContentStart="16dp"
+        android:background="@color/dark_blue"
+        app:tabTextColor="@color/white60"
+        app:tabSelectedTextColor="@color/white"
+        app:tabIndicatorColor="@android:color/white"
+        app:tabIndicatorFullWidth="false"
+        app:tabTextAppearance="@style/MyCustomTextAppearance">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="56dp"
+            android:text="@string/nav1" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="56dp"
+            android:text="@string/nav2" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="56dp"
+            android:text="@string/nav3" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/dark_blue">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@color/dark_blue_exp"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+        android:layout_gravity="bottom"
+    >
+
+        <ImageView
+            android:id="@+id/imageDrag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:padding="3.5dp"
+            app:layout_constraintBottom_toBottomOf="@+id/switchBottom"
+            app:layout_constraintEnd_toStartOf="@+id/switchBottom"
+            app:layout_constraintTop_toTopOf="@+id/switchBottom"
+            app:srcCompat="@drawable/drag_list_item" />
+
+        <ImageView
+            android:id="@+id/imageDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageSearch"
+            app:layout_constraintStart_toEndOf="@+id/imageSearch"
+            app:layout_constraintTop_toTopOf="@+id/imageSearch"
+            app:srcCompat="@drawable/delete" />
+
+        <ImageView
+            android:id="@+id/imageSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageAdd"
+            app:layout_constraintStart_toEndOf="@+id/imageAdd"
+            app:layout_constraintTop_toTopOf="@+id/imageAdd"
+            app:srcCompat="@drawable/search" />
+
+        <ImageView
+            android:id="@+id/imageAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/add"/>
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switchBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
