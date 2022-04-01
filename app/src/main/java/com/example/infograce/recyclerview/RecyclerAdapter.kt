@@ -36,10 +36,18 @@ class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
         val isVisible: Boolean = currentItem.visibility
         holder.binding.expandable.visibility = if (isVisible) View.VISIBLE else View.GONE
 
+        val isEnable: Boolean = currentItem.enable
+        holder.binding.titleLine.alpha = if (isEnable) 1f else 0.5f
+        holder.binding.invisView.visibility = if (isEnable) View.GONE else View.VISIBLE
+
         if (isVisible) {
             holder.binding.titleView.setTypeface(null, Typeface.BOLD)
             holder.binding.titleView.setTextColor(Color.parseColor("#59BD87"))
             holder.binding.iconView.setColorFilter(Color.parseColor("#59BD87"))
+        }else{
+            holder.binding.titleView.setTypeface(null, Typeface.NORMAL)
+            holder.binding.titleView.setTextColor(Color.WHITE)
+            holder.binding.iconView.setColorFilter(Color.WHITE)
         }
 
         holder.binding.chevron.setOnClickListener{
@@ -49,6 +57,12 @@ class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
         holder.binding.slider.addOnChangeListener { slider, value, fromUser ->
             holder.binding.transView.setText("Прозрачность: ${value.toInt()}%")
+        }
+
+        holder.binding.titleLine.setOnLongClickListener(){
+            currentItem.enable = !currentItem.enable
+            notifyItemChanged(position)
+            true
         }
 
 
