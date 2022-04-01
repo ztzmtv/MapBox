@@ -5,15 +5,18 @@ import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.infograce.R
 import com.example.infograce.dataClass.DataSource
 import com.example.infograce.dataClass.Layers
 import com.example.infograce.databinding.LayerGroupBinding
+import java.util.*
+import kotlin.collections.ArrayList
 
 class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
-    private var items: MutableList<Layers> = ArrayList()
+    var items: MutableList<Layers> = ArrayList()
 
     class ViewHolder constructor(
         itemView: View
@@ -36,10 +39,6 @@ class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
         val isVisible: Boolean = currentItem.visibility
         holder.binding.expandable.visibility = if (isVisible) View.VISIBLE else View.GONE
 
-        val isEnable: Boolean = currentItem.enable
-        holder.binding.titleLine.alpha = if (isEnable) 1f else 0.5f
-        holder.binding.invisView.visibility = if (isEnable) View.GONE else View.VISIBLE
-
         if (isVisible) {
             holder.binding.titleView.setTypeface(null, Typeface.BOLD)
             holder.binding.titleView.setTextColor(Color.parseColor("#59BD87"))
@@ -49,6 +48,14 @@ class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
             holder.binding.titleView.setTextColor(Color.WHITE)
             holder.binding.iconView.setColorFilter(Color.WHITE)
         }
+
+        val isEnable: Boolean = currentItem.enable
+        holder.binding.titleLine.alpha = if (isEnable) 1f else 0.5f
+        holder.binding.invisView.visibility = if (isEnable) View.GONE else View.VISIBLE
+
+        val isDraggable: Boolean = currentItem.draggable
+        holder.binding.switch2.visibility = if (isDraggable) View.INVISIBLE else View.VISIBLE
+        holder.binding.dragView.visibility = if (isDraggable) View.VISIBLE else View.GONE
 
         holder.binding.chevron.setOnClickListener{
             currentItem.visibility =! currentItem.visibility
@@ -92,6 +99,24 @@ class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
         notifyDataSetChanged()
     }
 
+    val touchHelper =
+    ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
+        override fun onMove(
+            p0: RecyclerView,
+            p1: RecyclerView.ViewHolder,
+            p2: RecyclerView.ViewHolder
+        ): Boolean {
+            val sourcePosition = p1.adapterPosition
+            val targetPosition = p2.adapterPosition
+            Collections.swap(items,sourcePosition,targetPosition)
+            notifyItemMoved(sourcePosition,targetPosition)
+            return true
+        }
+
+        override fun onSwiped(p0: RecyclerView.ViewHolder, p1: Int) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+    })
 
 
 }

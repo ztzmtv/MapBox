@@ -36,6 +36,15 @@ class MainActivity : AppCompatActivity() {
         binding.imageDelete.setOnClickListener {
             adapter.removeLayer()
         }
+
+        binding.imageDrag.setOnClickListener{
+            adapter.items.forEachIndexed(){index, value ->
+                value.draggable =! value.draggable
+                adapter.notifyItemChanged(index)
+            }
+        }
+
+        adapter.touchHelper.attachToRecyclerView(binding.recyclerView)
     }
 
     private fun addDataSet(){

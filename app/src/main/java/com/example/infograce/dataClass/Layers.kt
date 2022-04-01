@@ -8,5 +8,6 @@ data class Layers(
     val elem: String,
     val zoom: String,
     var visibility: Boolean = false,
-    var enable: Boolean = true
+    var enable: Boolean = true,
+    var draggable: Boolean = false
 )
