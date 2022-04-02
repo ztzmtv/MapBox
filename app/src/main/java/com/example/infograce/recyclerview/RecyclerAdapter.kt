@@ -3,8 +3,10 @@ package com.example.infograce.recyclerview
 import android.graphics.Color
 import android.graphics.Typeface
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.infograce.R
@@ -14,27 +16,31 @@ import com.example.infograce.databinding.LayerGroupBinding
 import java.util.*
 import kotlin.collections.ArrayList
 
-class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+class RecyclerAdapter(val listener: Listener): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     var items: MutableList<Layers> = ArrayList()
+
 
     class ViewHolder constructor(
         itemView: View
     ): RecyclerView.ViewHolder(itemView){
         val binding = LayerGroupBinding.bind(itemView)
-        fun bind(layers: Layers) = with(binding){
+        fun bind(layers: Layers, listener: Listener) = with(binding){
             titleView.text = layers.title
             transView.text = layers.trans
             syncView.text = layers.sync
             elemView.text = layers.elem
             zoomView.text = layers.zoom
             iconView.setImageResource(layers.icon)
+            switch2.setOnCheckedChangeListener{ buttonView, isChecked ->
+                listener.onSwitched()
+            }
         }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = items[position]
-        holder.bind(currentItem)
+        holder.bind(currentItem, listener)
 
         val isVisible: Boolean = currentItem.visibility
         holder.binding.expandable.visibility = if (isVisible) View.VISIBLE else View.GONE
@@ -57,6 +63,14 @@ class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
         holder.binding.switch2.visibility = if (isDraggable) View.INVISIBLE else View.VISIBLE
         holder.binding.dragView.visibility = if (isDraggable) View.VISIBLE else View.GONE
 
+        val isSwitched: Boolean = currentItem.switch
+        holder.binding.switch2.isChecked = isSwitched
+
+        holder.binding.switch2.setOnCheckedChangeListener { buttonView, isChecked ->
+            currentItem.switch = isChecked
+            notifyItemChanged(position)
+        }
+
         holder.binding.chevron.setOnClickListener{
             currentItem.visibility =! currentItem.visibility
             notifyItemChanged(position)
@@ -72,6 +86,12 @@ class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
             true
         }
 
+        holder.binding.dragView.setOnTouchListener { v, event ->
+            if(event.actionMasked== MotionEvent.ACTION_DOWN){
+                touchHelper.startDrag(holder)
+            }
+            false
+        }
 
     }
 
@@ -95,7 +115,7 @@ class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     }
 
     fun removeLayer(){
-        items.remove(items.removeAt(items.lastIndex))
+        items.removeLast()
         notifyDataSetChanged()
     }
 
@@ -112,11 +132,12 @@ class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
             notifyItemMoved(sourcePosition,targetPosition)
             return true
         }
-
         override fun onSwiped(p0: RecyclerView.ViewHolder, p1: Int) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
     })
 
+    interface Listener{
+        fun onSwitched()
+    }
 
 }
