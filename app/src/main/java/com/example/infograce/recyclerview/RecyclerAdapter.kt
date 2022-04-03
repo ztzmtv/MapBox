@@ -68,6 +68,7 @@ class RecyclerAdapter(val listener: Listener): RecyclerView.Adapter<RecyclerAdap
 
         holder.binding.switch2.setOnCheckedChangeListener { buttonView, isChecked ->
             currentItem.switch = isChecked
+            currentItem.switchSave = isChecked
             notifyItemChanged(position)
         }
 

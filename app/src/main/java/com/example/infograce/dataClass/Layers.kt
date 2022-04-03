@@ -11,4 +11,5 @@ data class Layers(
     var enable: Boolean = true,
     var draggable: Boolean = false,
     var switch: Boolean = false,
+    var switchSave: Boolean = false
 )
