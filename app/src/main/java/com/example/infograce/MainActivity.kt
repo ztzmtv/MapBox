@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener{
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter
 
-        addDataSet()
+        addDataSet("")
 
         binding.imageAdd.setOnClickListener{
             adapter.addLayer()
@@ -70,10 +70,14 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener{
             }
         })
 
+        binding.imageSearch.setOnClickListener {
+            binding.expandableSearch.visibility = if(binding.expandableSearch.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        }
+
     }
 
-    private fun addDataSet(){
-        val data = DataSource.createDataSet()
+    private fun addDataSet(search: String){
+        val data = DataSource.createDataSet(search)
         adapter.submitList(data)
     }
 

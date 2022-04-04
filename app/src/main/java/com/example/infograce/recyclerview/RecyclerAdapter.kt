@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filterable
 import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +17,7 @@ import com.example.infograce.databinding.LayerGroupBinding
 import java.util.*
 import kotlin.collections.ArrayList
 
-class RecyclerAdapter(val listener: Listener): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+class RecyclerAdapter(val listener: Listener): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(){
 
     var items: MutableList<Layers> = ArrayList()
 

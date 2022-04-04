@@ -4,7 +4,7 @@ import com.example.infograce.R
 
 class DataSource {
     companion object{
-        fun createDataSet():ArrayList<Layers> {
+        fun createDataSet(search: String):ArrayList<Layers> {
             val list = ArrayList<Layers>()
             list.add(
                 Layers(
