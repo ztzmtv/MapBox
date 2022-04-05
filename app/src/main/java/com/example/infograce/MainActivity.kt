@@ -1,9 +1,12 @@
 package com.example.infograce
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Switch
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.marginEnd
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.infograce.dataClass.DataSource
@@ -17,7 +20,7 @@ import kotlinx.coroutines.launch
 import kotlin.time.measureTimedValue
 
 
-class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener{
+class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.OnQueryTextListener{
 
     private lateinit var binding: MainActivityBinding
     private lateinit var adapter: RecyclerAdapter
@@ -60,14 +63,23 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener{
 //        }
 
         binding.switchBottom.setOnToggleChanged(OnToggleChanged { toggleStatus, booleanToggleStatus, toggleIntValue ->
-            adapter.items.forEachIndexed(){index, value ->
+//            adapter.items.map {
                 when (toggleStatus) {
-                    ToggleStatus.off -> value.switch = false
-                    ToggleStatus.mid -> value.switch = value.switchSave
-                    ToggleStatus.on -> value.switch = true
+                    ToggleStatus.off -> adapter.switchedOffAll()
+                    ToggleStatus.mid -> adapter.switchedMidAll()
+                    ToggleStatus.on -> adapter.switchedOnAll()
+                    null -> {}
                 }
-                adapter.notifyItemChanged(index)
-            }
+
+
+//                when (toggleStatus) {
+//                    ToggleStatus.off -> adapter.items.map {if (it.switch) {it.switch = false}}
+//                    ToggleStatus.mid -> adapter.items.map {if (it.switch != it.switchSave) it.switch = it.switchSave}
+//                    ToggleStatus.on -> adapter.items.map {if (!it.switch) it.switch = true}
+//                    null -> {}
+//                }
+            Log.d("tagg", "switchBottom")
+                    adapter.notifyDataSetChanged()
         })
 
         binding.imageSearch.setOnClickListener {
@@ -85,7 +97,6 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener{
         val isSwitchedAll: Boolean = adapter.items.all { it.switch }
         val isSwitchedAny: Boolean = adapter.items.any { it.switch }
 
-        CoroutineScope(Dispatchers.Main).launch {
             if (isSwitchedAll) {
                 binding.switchBottom.toggleOn()
             }
@@ -95,8 +106,16 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener{
             if (!isSwitchedAny) {
                 binding.switchBottom.toggleOff()
             }
-        }
 
     }
 
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        adapter.filter.filter(query)
+        return false
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        adapter.filter.filter(newText)
+        return false
+    }
 }

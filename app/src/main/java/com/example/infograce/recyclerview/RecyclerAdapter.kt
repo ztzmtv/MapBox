@@ -2,12 +2,13 @@ package com.example.infograce.recyclerview
 
 import android.graphics.Color
 import android.graphics.Typeface
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
 import android.widget.Filterable
-import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.infograce.R
@@ -17,10 +18,10 @@ import com.example.infograce.databinding.LayerGroupBinding
 import java.util.*
 import kotlin.collections.ArrayList
 
-class RecyclerAdapter(val listener: Listener): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(){
+class RecyclerAdapter(val listener: Listener): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(), Filterable{
 
     var items: MutableList<Layers> = ArrayList()
-
+    var filteredItems: MutableList<Layers> = ArrayList()
 
     class ViewHolder constructor(
         itemView: View
@@ -33,9 +34,14 @@ class RecyclerAdapter(val listener: Listener): RecyclerView.Adapter<RecyclerAdap
             elemView.text = layers.elem
             zoomView.text = layers.zoom
             iconView.setImageResource(layers.icon)
-            switch2.setOnCheckedChangeListener{ buttonView, isChecked ->
+
+            switch2.setOnClickListener {
+                layers.switchSave = switch2.isChecked
                 listener.onSwitched()
             }
+                switch2.setOnCheckedChangeListener { buttonView, isChecked ->
+                    layers.switch = isChecked
+                }
         }
     }
 
@@ -64,14 +70,7 @@ class RecyclerAdapter(val listener: Listener): RecyclerView.Adapter<RecyclerAdap
         holder.binding.switch2.visibility = if (isDraggable) View.INVISIBLE else View.VISIBLE
         holder.binding.dragView.visibility = if (isDraggable) View.VISIBLE else View.GONE
 
-        val isSwitched: Boolean = currentItem.switch
-        holder.binding.switch2.isChecked = isSwitched
-
-        holder.binding.switch2.setOnCheckedChangeListener { buttonView, isChecked ->
-            currentItem.switch = isChecked
-            currentItem.switchSave = isChecked
-            notifyItemChanged(position)
-        }
+        holder.binding.switch2.isChecked = currentItem.switch
 
         holder.binding.chevron.setOnClickListener{
             currentItem.visibility =! currentItem.visibility
@@ -108,17 +107,26 @@ class RecyclerAdapter(val listener: Listener): RecyclerView.Adapter<RecyclerAdap
 
     fun submitList(list: MutableList<Layers>){
         items = list
+    }
 
+    fun switchedOffAll(){
+        items.map { it.switch = false }
+    }
+    fun switchedOnAll(){
+        items.map { it.switch = true }
+    }
+    fun switchedMidAll(){
+        items.map { it.switch = it.switchSave }
     }
 
     fun addLayer(){
         items.add(DataSource.addLayer[0])
-        notifyDataSetChanged()
+        notifyItemChanged(itemCount)
     }
 
     fun removeLayer(){
         items.removeLast()
-        notifyDataSetChanged()
+        notifyItemChanged(itemCount)
     }
 
     val touchHelper =
@@ -140,6 +148,36 @@ class RecyclerAdapter(val listener: Listener): RecyclerView.Adapter<RecyclerAdap
 
     interface Listener{
         fun onSwitched()
+    }
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val charString = constraint?.toString() ?: ""
+                if (charString.isEmpty()) filteredItems = items else {
+                    val filteredList = ArrayList<Layers>()
+                    items
+                        .filter {
+                            (it.title.contains(constraint!!)) or
+                                    (it.title.contains(constraint))
+
+                        }
+                        .forEach { filteredList.add(it) }
+                    filteredItems = filteredList
+
+                }
+                return FilterResults().apply { values = filteredItems }
+            }
+
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+
+                filteredItems = if (results?.values == null)
+                    ArrayList()
+                else
+                    results.values as ArrayList<Layers>
+                notifyDataSetChanged()
+            }
+        }
     }
 
 }
