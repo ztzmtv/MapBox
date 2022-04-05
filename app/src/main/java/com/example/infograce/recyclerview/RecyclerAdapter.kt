@@ -1,8 +1,8 @@
 package com.example.infograce.recyclerview
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Typeface
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -18,7 +18,7 @@ import com.example.infograce.databinding.LayerGroupBinding
 import java.util.*
 import kotlin.collections.ArrayList
 
-class RecyclerAdapter(val listener: Listener): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(), Filterable{
+class RecyclerAdapter(private val listener: Listener): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(), Filterable{
 
     var items: MutableList<Layers> = ArrayList()
     var filteredItems: MutableList<Layers> = ArrayList()
@@ -39,12 +39,13 @@ class RecyclerAdapter(val listener: Listener): RecyclerView.Adapter<RecyclerAdap
                 layers.switchSave = switch2.isChecked
                 listener.onSwitched()
             }
-                switch2.setOnCheckedChangeListener { buttonView, isChecked ->
-                    layers.switch = isChecked
-                }
+            switch2.setOnCheckedChangeListener { buttonView, isChecked ->
+                layers.switch = isChecked
+            }
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility", "SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = items[position]
         holder.bind(currentItem, listener)
@@ -154,21 +155,20 @@ class RecyclerAdapter(val listener: Listener): RecyclerView.Adapter<RecyclerAdap
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charString = constraint?.toString() ?: ""
-                if (charString.isEmpty()) filteredItems = items else {
+                filteredItems = if (charString.isEmpty()) items else {
                     val filteredList = ArrayList<Layers>()
                     items
                         .filter {
                             (it.title.contains(constraint!!)) or
                                     (it.title.contains(constraint))
-
                         }
                         .forEach { filteredList.add(it) }
-                    filteredItems = filteredList
-
+                    filteredList
                 }
                 return FilterResults().apply { values = filteredItems }
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
 
                 filteredItems = if (results?.values == null)
