@@ -101,8 +101,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleLine"
         tools:context=".ui.main.MainFragment">
-<!--                    app:layout_constraintTop_toTopOf="parent"-->
-<!--                    app:layout_constraintBottom_toBottomOf="parent">-->
 
         <TextView
             android:id="@+id/transView"

@@ -17,18 +17,23 @@ import com.example.infograce.dataClass.Layers
 import com.example.infograce.databinding.LayerGroupBinding
 import java.util.*
 import kotlin.collections.ArrayList
+import android.text.style.ForegroundColorSpan
+import androidx.core.content.res.ResourcesCompat
+
 
 class RecyclerAdapter(private val listener: Listener): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(), Filterable{
 
     var items: MutableList<Layers> = ArrayList()
     var filteredItems: MutableList<Layers> = ArrayList()
+//    var itemsAll: MutableList<Layers> = ArrayList()
+
 
     class ViewHolder constructor(
         itemView: View
     ): RecyclerView.ViewHolder(itemView){
         val binding = LayerGroupBinding.bind(itemView)
         fun bind(layers: Layers, listener: Listener) = with(binding){
-            titleView.text = layers.title
+            titleView.text = layers.title.title
             transView.text = layers.trans
             syncView.text = layers.sync
             elemView.text = layers.elem
@@ -47,7 +52,7 @@ class RecyclerAdapter(private val listener: Listener): RecyclerView.Adapter<Recy
 
     @SuppressLint("ClickableViewAccessibility", "SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentItem = items[position]
+        val currentItem = filteredItems[position]
         holder.bind(currentItem, listener)
 
         val isVisible: Boolean = currentItem.visibility
@@ -98,7 +103,7 @@ class RecyclerAdapter(private val listener: Listener): RecyclerView.Adapter<Recy
     }
 
     override fun getItemCount(): Int {
-        return items.size
+        return filteredItems.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -108,6 +113,7 @@ class RecyclerAdapter(private val listener: Listener): RecyclerView.Adapter<Recy
 
     fun submitList(list: MutableList<Layers>){
         items = list
+        filteredItems = list
     }
 
     fun switchedOffAll(){
@@ -152,6 +158,7 @@ class RecyclerAdapter(private val listener: Listener): RecyclerView.Adapter<Recy
     }
 
     override fun getFilter(): Filter {
+
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charString = constraint?.toString() ?: ""
@@ -159,8 +166,8 @@ class RecyclerAdapter(private val listener: Listener): RecyclerView.Adapter<Recy
                     val filteredList = ArrayList<Layers>()
                     items
                         .filter {
-                            (it.title.contains(constraint!!)) or
-                                    (it.title.contains(constraint))
+                            (it.title.title.contains(constraint!!)) or
+                                    (it.title.title.contains(constraint))
                         }
                         .forEach { filteredList.add(it) }
                     filteredList

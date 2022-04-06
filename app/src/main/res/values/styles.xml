@@ -39,6 +39,9 @@
 <style name="LoginTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
     <item name="boxStrokeColor">#fff</item>
     <item name="boxStrokeWidth">1dp</item>
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">10dp</item>
+
 </style>
 
 </resources>
