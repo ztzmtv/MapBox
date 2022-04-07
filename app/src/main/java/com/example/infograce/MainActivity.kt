@@ -23,11 +23,6 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
     private lateinit var adapter: RecyclerAdapter
     var indirectSwitched: Boolean = false
 
-//    private val spanHighlight by lazy {
-//        ForegroundColorSpan(
-//            ResourcesCompat.getColor(resources, R.color.purple_500, null))
-//    }
-
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,7 +69,6 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
 
         binding.imageSearch.setOnClickListener {
             binding.expandableSearch.visibility = if(binding.expandableSearch.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-//            it.requestFocus()
         }
 
         binding.editSearch.addTextChangedListener(object : TextWatcher {
@@ -122,36 +116,4 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
         return false
     }
 
-//    private fun highlight() {
-//        val s = binding.editSearch.text
-//        adapter.filteredItems.forEach { item ->
-//            // {1}
-//            item.title.title.getSpans(0, item.title.title.length, ForegroundColorSpan::class.java).forEach {
-//                item.title.title.removeSpan(it)
-//            }
-//            // {4}
-//            if (s?.let { item.title.title.contains(it, true) } == true) {
-//                val index = item.title.toString().indexOf(s.toString(), 0, true)
-//                item.title.title.setSpan(spanHighlight, index, index + s.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-//            }
-//        }
-//    }
-
-//    private fun updateSearch() {
-//        val s = binding.editSearch.text
-//
-//        if (s?.length == 0) {
-//            // Пользователь очистил поле поиска. Показываем все предметы
-//            // Загружаем в адаптер лист со всеми предметами
-//            adapter.items = ItemStorage.list
-//
-//        } else {
-//            // Пользователь что-то ввёл. Делаем поиск по этому запросу
-//            // Загружаем в адаптер отфильтрованный лист
-//            adapter.list = ItemStorage.list.filter {
-//                it.abbr.startsWith(s.toString(), true) || it.name.contains(s.toString(), true)
-//            } as ArrayList
-//        }
-//        adapter.notifyDataSetChanged()
-//    }
 }

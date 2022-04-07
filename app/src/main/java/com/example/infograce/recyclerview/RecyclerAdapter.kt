@@ -3,6 +3,7 @@ package com.example.infograce.recyclerview
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Typeface
+import android.text.Spannable
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -18,14 +19,19 @@ import com.example.infograce.databinding.LayerGroupBinding
 import java.util.*
 import kotlin.collections.ArrayList
 import android.text.style.ForegroundColorSpan
-import androidx.core.content.res.ResourcesCompat
+import androidx.core.text.clearSpans
 
 
 class RecyclerAdapter(private val listener: Listener): RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(), Filterable{
 
     var items: MutableList<Layers> = ArrayList()
     var filteredItems: MutableList<Layers> = ArrayList()
-//    var itemsAll: MutableList<Layers> = ArrayList()
+    var queryText=""
+
+    private val spanHighlight by lazy {
+        ForegroundColorSpan(
+            Color.parseColor("#FF0027FF"))
+    }
 
 
     class ViewHolder constructor(
@@ -53,6 +59,24 @@ class RecyclerAdapter(private val listener: Listener): RecyclerView.Adapter<Recy
     @SuppressLint("ClickableViewAccessibility", "SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = filteredItems[position]
+        holder.bind(currentItem, listener)
+        if (queryText.isNotEmpty()) {
+            val startPos =
+                currentItem.title.title.toString().lowercase().indexOf(queryText.lowercase())
+            val endPos = startPos + queryText.length
+            if (startPos != -1) {
+                if (queryText?.let { currentItem.title.title.contains(it, true) }) {
+                    currentItem.title.title.setSpan(
+                        spanHighlight,
+                        startPos,
+                        endPos,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                }
+            }
+                } else {
+            currentItem.title.title.clearSpans()
+        }
         holder.bind(currentItem, listener)
 
         val isVisible: Boolean = currentItem.visibility
@@ -162,12 +186,14 @@ class RecyclerAdapter(private val listener: Listener): RecyclerView.Adapter<Recy
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charString = constraint?.toString() ?: ""
+                queryText = charString
+//                Log.d("tagg", "$queryText")
                 filteredItems = if (charString.isEmpty()) items else {
                     val filteredList = ArrayList<Layers>()
                     items
                         .filter {
-                            (it.title.title.contains(constraint!!)) or
-                                    (it.title.title.contains(constraint))
+                            (it.title.title.toString().lowercase().contains(constraint.toString().lowercase()!!)) or
+                                    (it.title.title.toString().lowercase().contains(constraint.toString().lowercase()))
                         }
                         .forEach { filteredList.add(it) }
                     filteredList

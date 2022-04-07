@@ -16,14 +16,6 @@ data class Layers(
     var switch: Boolean = false,
     var switchSave: Boolean = false
 ){
-//    constructor(title: Spannable,
-
-//                visibility: Boolean = false,
-//                enable: Boolean = true,
-//                draggable: Boolean = false,
-//                switch: Boolean = false,
-//                switchSave: Boolean = false
-//    ) : this(SpannableString(title),SpannableString(icon),SpannableString(trans),SpannableString(sync),SpannableString(elem),SpannableString(zoom))
 }
 
 data class titleSpannable (
