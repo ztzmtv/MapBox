@@ -5,7 +5,7 @@ import android.text.SpannableString
 
 data class Layers(
     val icon: Int,
-    val title: titleSpannable,
+    val title: TitleSpannable,
     val trans : String,
     val sync: String,
     val elem: String,
@@ -18,7 +18,7 @@ data class Layers(
 ){
 }
 
-data class titleSpannable (
+data class TitleSpannable (
     val title:  Spannable) {
     constructor(title: String) : this(SpannableString(title))
 }
