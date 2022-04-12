@@ -97,6 +97,7 @@
         android:background="@drawable/layout_bg"
         android:layout_marginStart="16dp"
         app:thumbColor='@color/green'
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleLine"

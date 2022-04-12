@@ -3,4 +3,5 @@
     <string name="nav1">Слои</string>
     <string name="nav2">Подложки</string>
     <string name="nav3">Миссии</string>
+    <string name="titleGroup">Общие слои</string>
 </resources>

@@ -4,12 +4,12 @@ import com.example.infograce.R
 
 class DataSource {
     companion object{
-        fun createDataSet(search: String):ArrayList<Layers> {
-            val list = ArrayList<Layers>()
+        fun createDataSet(search: String):ArrayList<RecyclerViewItems> {
+            val list = ArrayList<RecyclerViewItems>()
             list.add(
-                Layers(
+                RecyclerViewItems.Layers(
                     R.drawable.grometry_collection,
-                    TitleSpannable("Слой делян"),
+                    RecyclerViewItems.TitleSpannable("Слой делян"),
                     "Прозрачность: 60%",
                     "Синхр.: 12.02.2022",
                     "Эл-ов: 23",
@@ -17,9 +17,9 @@ class DataSource {
                 )
             )
             list.add(
-                Layers(
+                RecyclerViewItems.Layers(
                     R.drawable.waypoint,
-                    TitleSpannable("Сигналы о лесоизменениях, тестовая выборка с ув-ным шагом"),
+                    RecyclerViewItems.TitleSpannable("Сигналы о лесоизменениях, тестовая выборка с ув-ным шагом"),
                     "Прозрачность: 60%",
                     "Синхр.: 12.02.2022",
                     "Эл-ов: 23",
@@ -27,9 +27,9 @@ class DataSource {
                 )
             )
             list.add(
-                Layers(
+                RecyclerViewItems.Layers(
                     R.drawable.line,
-                    TitleSpannable("Преграды для прохождения огня"),
+                    RecyclerViewItems.TitleSpannable("Преграды для прохождения огня"),
                     "Прозрачность: 60%",
                     "Синхр.: 12.02.2022",
                     "Эл-ов: 23",
@@ -37,9 +37,9 @@ class DataSource {
                 )
             )
             list.add(
-                Layers(
+                RecyclerViewItems.Layers(
                     R.drawable.polygon,
-                    TitleSpannable("Маска облачности от 02.07.2021"),
+                    RecyclerViewItems.TitleSpannable("Маска облачности от 02.07.2021"),
                     "Прозрачность: 60%",
                     "Синхр.: 12.02.2022",
                     "Эл-ов: 23",
@@ -47,9 +47,9 @@ class DataSource {
                 )
             )
             list.add(
-                Layers(
+                RecyclerViewItems.Layers(
                     R.drawable.polygon,
-                    TitleSpannable("Маска облачности от 02.07.2021"),
+                    RecyclerViewItems.TitleSpannable("Маска облачности от 02.07.2021"),
                     "Прозрачность: 60%",
                     "Синхр.: 12.02.2022",
                     "Эл-ов: 23",
@@ -57,9 +57,9 @@ class DataSource {
                 )
             )
             list.add(
-                Layers(
+                RecyclerViewItems.Layers(
                     R.drawable.folder,
-                    TitleSpannable("Папка со слоями"),
+                    RecyclerViewItems.TitleSpannable("Папка со слоями"),
                     "Прозрачность: 60%",
                     "Синхр.: 12.02.2022",
                     "Эл-ов: 23",
@@ -67,9 +67,9 @@ class DataSource {
                 )
             )
             list.add(
-                Layers(
+                RecyclerViewItems.Layers(
                     R.drawable.polygon_hatched_2,
-                    TitleSpannable("Маска облачности от 01.07.2021"),
+                    RecyclerViewItems.TitleSpannable("Маска облачности от 01.07.2021"),
                     "Прозрачность: 60%",
                     "Синхр.: 12.02.2022",
                     "Эл-ов: 23",
@@ -77,9 +77,9 @@ class DataSource {
                 )
             )
             list.add(
-                Layers(
+                RecyclerViewItems.Layers(
                     R.drawable.polygon,
-                    TitleSpannable("Маска облачности от 12.01.2022"),
+                    RecyclerViewItems.TitleSpannable("Маска облачности от 12.01.2022"),
                     "Прозрачность: 60%",
                     "Синхр.: 12.02.2022",
                     "Эл-ов: 23",
@@ -87,9 +87,9 @@ class DataSource {
                 )
             )
             list.add(
-                Layers(
+                RecyclerViewItems.Layers(
                     R.drawable.polygon,
-                    TitleSpannable("Маска облачности от 12.01.2022"),
+                    RecyclerViewItems.TitleSpannable("Маска облачности от 12.01.2022"),
                     "Прозрачность: 60%",
                     "Синхр.: 12.02.2022",
                     "Эл-ов: 23",
@@ -97,9 +97,9 @@ class DataSource {
                 )
             )
             list.add(
-                Layers(
+                RecyclerViewItems.Layers(
                     R.drawable.polygon,
-                    TitleSpannable("Маска облачности от 12.01.2022"),
+                    RecyclerViewItems.TitleSpannable("Маска облачности от 12.01.2022"),
                     "Прозрачность: 60%",
                     "Синхр.: 12.02.2022",
                     "Эл-ов: 23",
@@ -107,9 +107,9 @@ class DataSource {
                 )
             )
             list.add(
-                Layers(
+                RecyclerViewItems.Layers(
                     R.drawable.polygon,
-                    TitleSpannable("Маска облачности от 12.01.2022"),
+                    RecyclerViewItems.TitleSpannable("Маска облачности от 12.01.2022"),
                     "Прозрачность: 60%",
                     "Синхр.: 12.02.2022",
                     "Эл-ов: 23",
@@ -117,9 +117,9 @@ class DataSource {
                 )
             )
             list.add(
-                Layers(
+                RecyclerViewItems.Layers(
                     R.drawable.polygon,
-                    TitleSpannable("Маска облачности от 12.01.2022"),
+                    RecyclerViewItems.TitleSpannable("Маска облачности от 12.01.2022"),
                     "Прозрачность: 60%",
                     "Синхр.: 12.02.2022",
                     "Эл-ов: 23",
@@ -129,9 +129,9 @@ class DataSource {
             return list
         }
         var addLayer = listOf(
-            Layers(
+            RecyclerViewItems.Layers(
                 R.drawable.polygon,
-                TitleSpannable("Маска облачности от 12.01.2022"),
+                RecyclerViewItems.TitleSpannable("Маска облачности от 12.01.2022"),
                 "Прозрачность: 60%",
                 "Синхр.: 12.02.2022",
                 "Эл-ов: 23",
