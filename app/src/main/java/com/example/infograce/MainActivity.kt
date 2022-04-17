@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.Spannable
 import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -23,6 +24,8 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
     private lateinit var binding: MainActivityBinding
     private lateinit var adapter: RecyclerAdapter
     var indirectSwitched: Boolean = false
+    var searchState: Boolean = false
+    var dragState: Boolean = false
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +53,7 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
         binding.imageDrag.setOnClickListener {
             adapter.items.filterIsInstance<RecyclerViewItems.Layers>().forEachIndexed(){index, value ->
                 value.draggable =! value.draggable
-                adapter.notifyItemChanged(index)
+                adapter.notifyDataSetChanged()
                 adapter.touchHelper.attachToRecyclerView(binding.recyclerView)
             }
             binding.switchBottom.visibility = if(adapter.items.filterIsInstance<RecyclerViewItems.Layers>().any { it.draggable }) View.GONE else View.VISIBLE
@@ -69,6 +72,8 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
         }
 
         binding.imageSearch.setOnClickListener {
+//            searchState =! searchState
+            if (searchState) binding.imageSearch.setBackgroundColor(resources.getColor(R.color.green)) else binding.imageSearch.setBackgroundColor(resources.getColor(R.color.dark_blue_exp))
             binding.expandableSearch.visibility = if(binding.expandableSearch.visibility == View.VISIBLE) View.GONE else View.VISIBLE
         }
 

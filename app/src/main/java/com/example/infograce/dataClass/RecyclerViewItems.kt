@@ -26,17 +26,7 @@ sealed class RecyclerViewItems {
     }
 
     data class LayersGroup(
-//        val icon: Int,
         val titleGroup: String,
-//        val trans : String,
-//        val sync: String,
-//        val elem: String,
-//        val zoom: String,
-//        var visibility: Boolean = false,
-//        var enable: Boolean = true,
-//        var draggable: Boolean = false,
-//        var switch: Boolean = false,
-//        var switchSave: Boolean = false
     ):RecyclerViewItems()
 
 }

@@ -11,14 +11,15 @@
         <entry key="..\:/AndStu/Infograce/app/src/main/res/drawable/polygon.xml" value="0.1095" />
         <entry key="..\:/AndStu/Infograce/app/src/main/res/drawable/polygon_hatched_2.xml" value="0.1095" />
         <entry key="..\:/AndStu/Infograce/app/src/main/res/drawable/region_border_dash_view.xml" value="0.1095" />
+        <entry key="..\:/AndStu/Infograce/app/src/main/res/drawable/ripple.xml" value="0.162" />
         <entry key="..\:/AndStu/Infograce/app/src/main/res/drawable/search.xml" value="0.1095" />
         <entry key="..\:/AndStu/Infograce/app/src/main/res/drawable/search2.xml" value="0.192" />
         <entry key="..\:/AndStu/Infograce/app/src/main/res/drawable/union.xml" value="0.179" />
         <entry key="..\:/AndStu/Infograce/app/src/main/res/font/font.xml" value="0.17395833333333333" />
         <entry key="..\:/AndStu/Infograce/app/src/main/res/layout/layer.xml" value="0.30052083333333335" />
-        <entry key="..\:/AndStu/Infograce/app/src/main/res/layout/layer_group.xml" value="0.3333333333333333" />
-        <entry key="..\:/AndStu/Infograce/app/src/main/res/layout/layers_group.xml" value="0.8333333333333334" />
-        <entry key="..\:/AndStu/Infograce/app/src/main/res/layout/main_activity.xml" value="0.16877637130801687" />
+        <entry key="..\:/AndStu/Infograce/app/src/main/res/layout/layer_group.xml" value="0.22" />
+        <entry key="..\:/AndStu/Infograce/app/src/main/res/layout/layers_group.xml" value="0.3333333333333333" />
+        <entry key="..\:/AndStu/Infograce/app/src/main/res/layout/main_activity.xml" value="0.22" />
         <entry key="..\:/AndStu/Infograce/app/src/main/res/layout/main_fragment.xml" value="0.13333333333333333" />
         <entry key="..\:/AndStu/Infograce/app/src/main/res/layout/sec_fragment.xml" value="0.24682971014492755" />
         <entry key="..\:/AndStu/Infograce/app/src/main/res/menu/menu.xml" value="0.14375" />

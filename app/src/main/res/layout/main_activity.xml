@@ -69,15 +69,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <!--                    <androidx.appcompat.widget.SearchView-->
-                <!--                        android:id="@+id/editSearch"-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="45dp"-->
-                <!--                        android:layout_marginHorizontal="16dp"-->
-                <!--                        android:layout_marginBottom="20dp"-->
-                <!--                        android:textColor="@color/white"-->
-                <!--                        style="@style/LoginTextInputLayoutStyle"/>-->
-
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editSearch"
                     android:layout_width="match_parent"
@@ -149,28 +140,33 @@
             android:id="@+id/imageDrag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="15dp"
-            android:padding="3.5dp"
+            android:layout_marginEnd="5dp"
+            android:padding="13.5dp"
             app:layout_constraintBottom_toBottomOf="@+id/switchBottom"
             app:layout_constraintEnd_toStartOf="@+id/switchBottom"
             app:layout_constraintTop_toTopOf="@+id/switchBottom"
+            android:background="?android:attr/selectableItemBackground"
             app:srcCompat="@drawable/drag_list_item" />
 
         <ImageView
             android:id="@+id/imageDelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="0dp"
+            android:padding="12dp"
             app:layout_constraintBottom_toBottomOf="@+id/imageSearch"
             app:layout_constraintStart_toEndOf="@+id/imageSearch"
             app:layout_constraintTop_toTopOf="@+id/imageSearch"
+            android:background="?android:attr/selectableItemBackground"
             app:srcCompat="@drawable/delete" />
 
         <ImageView
             android:id="@+id/imageSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="0dp"
+            android:padding="12dp"
+            android:background="?android:attr/selectableItemBackground"
             app:layout_constraintBottom_toBottomOf="@+id/imageAdd"
             app:layout_constraintStart_toEndOf="@+id/imageAdd"
             app:layout_constraintTop_toTopOf="@+id/imageAdd"
@@ -180,7 +176,8 @@
             android:id="@+id/imageAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="8dp"
+            android:background="?android:attr/selectableItemBackground"            android:padding="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -194,6 +191,15 @@
         <!--            app:layout_constraintBottom_toBottomOf="parent"-->
         <!--            app:layout_constraintEnd_toEndOf="parent"-->
         <!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--        <View-->
+<!--            android:id="@+id/switchBottomBox"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginEnd="18dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"/>-->
 
         <it.beppi.tristatetogglebutton_library.TriStateToggleButton
             android:id="@+id/switchBottom"

@@ -34,8 +34,8 @@ class RecyclerAdapter(private val listenerActivity: MainActivity): RecyclerView.
 
 
     var items: MutableList<RecyclerViewItems> = ArrayList()
-    var filteredItems: MutableList<RecyclerViewItems.Layers> = ArrayList()
-    var filteredItemsFirst: MutableList<RecyclerViewItems.Layers> = ArrayList()
+    var filteredItems: MutableList<RecyclerViewItems> = ArrayList()
+//    var filteredItemsFirst: MutableList<RecyclerViewItems.Layers> = ArrayList()
     var queryText=""
 
     private val spanHighlight by lazy {
@@ -72,82 +72,85 @@ class RecyclerAdapter(private val listenerActivity: MainActivity): RecyclerView.
 
     @SuppressLint("ClickableViewAccessibility", "SetTextI18n")
     override fun onBindViewHolder(holder: RecyclerViewHolders, position: Int) {
-        val currentItem = filteredItems[position]
         when (holder) {
-            is RecyclerViewHolders.LayersGroupViewHolder -> holder.bind(currentItem as RecyclerViewItems.LayersGroup, listenerActivity)
+            is RecyclerViewHolders.LayersGroupViewHolder -> holder.bind(
+                items[position] as RecyclerViewItems.LayersGroup,
+                listenerActivity
+            )
             is RecyclerViewHolders.LayersViewHolder -> {
-                holder.bind(currentItem as RecyclerViewItems.Layers, listenerActivity)
-//    @SuppressLint("ClickableViewAccessibility", "SetTextI18n")
-//    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-//        val currentItem = filteredItems[position]
-//        holder.bind(currentItem, listenerActivity)
-//        holder.bind(currentItem, listenerActivity)
-                if (queryText.isNotEmpty()) {
-                    val startPos =
-                        currentItem.title.title.toString().lowercase().indexOf(queryText.lowercase())
-                    val endPos = startPos + queryText.length
-                    if (startPos != -1) {
-                        if (queryText.let { currentItem.title.title.contains(it, true) }) {
-                            currentItem.title.title.setSpan(
-                                spanHighlight,
-                                startPos,
-                                endPos,
-                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                            )
+                val currentItem = filteredItems[position]
+                Log.d("taggg","${items.size},${filteredItems.size}")
+                if (currentItem is RecyclerViewItems.Layers) {
+                    holder.bind(currentItem as RecyclerViewItems.Layers, listenerActivity)
+                    if (queryText.isNotEmpty()) {
+                        val startPos =
+                            currentItem.title.title.toString().lowercase()
+                                .indexOf(queryText.lowercase())
+                        val endPos = startPos + queryText.length
+                        if (startPos != -1) {
+                            if (queryText.let { currentItem.title.title.contains(it, true) }) {
+                                currentItem.title.title.setSpan(
+                                    spanHighlight,
+                                    startPos,
+                                    endPos,
+                                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                                )
+                            }
                         }
+                    } else {
+                        currentItem.title.title.clearSpans()
                     }
-                } else {
-                    currentItem.title.title.clearSpans()
-                }
-                holder.bind(currentItem, listenerActivity)
-        holder.bind(currentItem, listenerActivity)
+                    holder.bind(currentItem, listenerActivity)
 
-                val isVisible: Boolean = currentItem.visibility
-                holder.binding.expandable.visibility = if (isVisible) View.VISIBLE else View.GONE
+                    val isVisible: Boolean = currentItem.visibility
+                    holder.binding.expandable.visibility =
+                        if (isVisible) View.VISIBLE else View.GONE
 
-                if (isVisible) {
-                    holder.binding.titleView.setTypeface(null, Typeface.BOLD)
-                    holder.binding.titleView.setTextColor(Color.parseColor("#59BD87"))
-                    holder.binding.iconView.setColorFilter(Color.parseColor("#59BD87"))
-                } else {
-                    holder.binding.titleView.setTypeface(null, Typeface.NORMAL)
-                    holder.binding.titleView.setTextColor(Color.WHITE)
-                    holder.binding.iconView.setColorFilter(Color.WHITE)
-                }
-
-                val isEnable: Boolean = currentItem.enable
-                holder.binding.titleLine.alpha = if (isEnable) 1f else 0.5f
-                holder.binding.invisView.visibility = if (isEnable) View.GONE else View.VISIBLE
-
-                val isDraggable: Boolean = currentItem.draggable
-                holder.binding.switch2.visibility =
-                    if (isDraggable) View.INVISIBLE else View.VISIBLE
-                holder.binding.dragView.visibility = if (isDraggable) View.VISIBLE else View.GONE
-
-                holder.binding.switch2.isChecked = currentItem.switch
-
-                holder.binding.chevron.setOnClickListener {
-                    currentItem.visibility = !currentItem.visibility
-                    notifyItemChanged(position)
-                }
-
-                holder.binding.slider.addOnChangeListener { slider, value, fromUser ->
-                    holder.binding.transView.setText("Прозрачность: ${value.toInt()}%")
-                }
-
-                holder.binding.titleLine.setOnLongClickListener() {
-                    currentItem.enable = !currentItem.enable
-                    notifyItemChanged(position)
-                    true
-                }
-
-                holder.binding.dragView.setOnTouchListener { v, event ->
-                    if (event.actionMasked == MotionEvent.ACTION_DOWN) {
-                        touchHelper.startDrag(holder)
+                    if (isVisible) {
+                        holder.binding.titleView.setTypeface(null, Typeface.BOLD)
+                        holder.binding.titleView.setTextColor(Color.parseColor("#59BD87"))
+                        holder.binding.iconView.setColorFilter(Color.parseColor("#59BD87"))
+                    } else {
+                        holder.binding.titleView.setTypeface(null, Typeface.NORMAL)
+                        holder.binding.titleView.setTextColor(Color.WHITE)
+                        holder.binding.iconView.setColorFilter(Color.WHITE)
                     }
-                    false
-                }
 
+                    val isEnable: Boolean = currentItem.enable
+                    holder.binding.titleLine.alpha = if (isEnable) 1f else 0.5f
+                    holder.binding.invisView.visibility = if (isEnable) View.GONE else View.VISIBLE
+
+                    val isDraggable: Boolean = currentItem.draggable
+                    holder.binding.switch2.visibility =
+                        if (isDraggable) View.INVISIBLE else View.VISIBLE
+                    holder.binding.dragView.visibility =
+                        if (isDraggable) View.VISIBLE else View.GONE
+
+                    holder.binding.switch2.isChecked = currentItem.switch
+
+                    holder.binding.chevron.setOnClickListener {
+                        currentItem.visibility = !currentItem.visibility
+                        notifyItemChanged(position)
+                    }
+
+                    holder.binding.slider.addOnChangeListener { slider, value, fromUser ->
+                        holder.binding.transView.setText("Прозрачность: ${value.toInt()}%")
+                    }
+
+                    holder.binding.titleLine.setOnLongClickListener() {
+                        currentItem.enable = !currentItem.enable
+                        notifyItemChanged(position)
+                        true
+                    }
+
+                    holder.binding.dragView.setOnTouchListener { v, event ->
+                        if (event.actionMasked == MotionEvent.ACTION_DOWN) {
+                            touchHelper.startDrag(holder)
+                        }
+                        false
+                    }
+
+                }
             }
         }
     }
@@ -186,13 +189,15 @@ class RecyclerAdapter(private val listenerActivity: MainActivity): RecyclerView.
                 is RecyclerViewItems.TitleSpannable -> R.layout.layer_group
                 is RecyclerViewItems.LayersGroup -> R.layout.layers_group
                 is RecyclerViewItems.Layers -> R.layout.layer_group
+
             }
         }
 
         fun submitList(list: MutableList<RecyclerViewItems>) {
             items = list
-            filteredItems = list.filterIsInstance<RecyclerViewItems.Layers>().toMutableList()
-            filteredItemsFirst = list.filterIsInstance<RecyclerViewItems.Layers>().toMutableList()
+            filteredItems = list
+//            filteredItems = list.toMutableList()
+//            filteredItems[list.indexOf(RecyclerViewItems.LayersGroup("Общие слои"))] = null
         }
 
     fun switchedOffAll(){
@@ -242,27 +247,28 @@ class RecyclerAdapter(private val listenerActivity: MainActivity): RecyclerView.
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charString = constraint?.toString() ?: ""
                 queryText = charString
-                filteredItems = if (charString.isEmpty()) filteredItemsFirst else {
-                    val filteredList = ArrayList<RecyclerViewItems.Layers>()
-                    filteredItemsFirst.filterIsInstance<RecyclerViewItems.Layers>().filter {
+                    val filteredList = ArrayList<RecyclerViewItems>()
+                    items.filterIsInstance<RecyclerViewItems.Layers>().filter {
                                 (it.title.title.toString().lowercase()
                                     .contains(constraint.toString().lowercase()!!)) or
                                         (it.title.title.toString().lowercase()
                                             .contains(constraint.toString().lowercase()))
                         }
                         .forEach { filteredList.add(it) }
-                    filteredList
-                }
-                return FilterResults().apply { values = filteredItems }
+//                filteredItems = filteredList.toMutableList()
+                filteredItems = filteredList
+                Log.d("tagg","return")
+                return FilterResults().apply { values = if (charString.isEmpty()) items else filteredItems }
             }
 
             @SuppressLint("NotifyDataSetChanged")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                Log.d("tagg","publish $results")
                 filteredItems = if (results?.values == null)
                     ArrayList()
                 else
-                    results.values as ArrayList<RecyclerViewItems.Layers>
-                Log.d("tagg","$filteredItems")
+//                    results.values as MutableList<RecyclerViewItems>
+                    results.values as ArrayList<RecyclerViewItems>
                 notifyDataSetChanged()
             }
         }

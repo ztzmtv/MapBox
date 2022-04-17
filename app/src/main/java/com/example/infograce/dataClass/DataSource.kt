@@ -5,7 +5,7 @@ import com.example.infograce.R
 class DataSource {
     companion object{
         fun createDataSet(search: String):ArrayList<RecyclerViewItems> {
-            val list = ArrayList<RecyclerViewItems>()
+            var list = ArrayList<RecyclerViewItems>()
             list.add(
                 RecyclerViewItems.Layers(
                     R.drawable.grometry_collection,
@@ -54,6 +54,11 @@ class DataSource {
                     "Синхр.: 12.02.2022",
                     "Эл-ов: 23",
                     "Зум: 16-18"
+                )
+            )
+            list.add(
+                RecyclerViewItems.LayersGroup(
+                    "Общие слои"
                 )
             )
             list.add(
