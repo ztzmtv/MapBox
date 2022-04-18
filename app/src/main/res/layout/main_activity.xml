@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -112,7 +113,8 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
@@ -140,12 +142,14 @@
             android:id="@+id/imageDrag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:padding="13.5dp"
-            app:layout_constraintBottom_toBottomOf="@+id/switchBottom"
+            android:layout_marginEnd="0dp"
+            android:paddingHorizontal="25dp"
+            android:paddingVertical="14dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/switchBottom"
-            app:layout_constraintTop_toTopOf="@+id/switchBottom"
-            android:background="?android:attr/selectableItemBackground"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/button_background_color"
+            app:tint="@color/button_text_color"
             app:srcCompat="@drawable/drag_list_item" />
 
         <ImageView
@@ -157,7 +161,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/imageSearch"
             app:layout_constraintStart_toEndOf="@+id/imageSearch"
             app:layout_constraintTop_toTopOf="@+id/imageSearch"
-            android:background="?android:attr/selectableItemBackground"
+            android:background="@color/button_background_color"
             app:srcCompat="@drawable/delete" />
 
         <ImageView
@@ -166,18 +170,35 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:padding="12dp"
-            android:background="?android:attr/selectableItemBackground"
             app:layout_constraintBottom_toBottomOf="@+id/imageAdd"
             app:layout_constraintStart_toEndOf="@+id/imageAdd"
             app:layout_constraintTop_toTopOf="@+id/imageAdd"
+            android:background="@color/button_background_color"
             app:srcCompat="@drawable/search" />
+
+<!--        <Button-->
+<!--            android:id="@+id/imageSearch"-->
+<!--            android:layout_width="48dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:padding="12dp"-->
+<!--            android:backgroundTint="@color/button_background_color"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/imageAdd"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/imageAdd"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/imageAdd"-->
+<!--            app:icon="@drawable/search"-->
+<!--            app:iconGravity="textStart"-->
+<!--            app:iconPadding="0dp"-->
+
+<!--            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"-->
+<!--            />-->
 
         <ImageView
             android:id="@+id/imageAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:background="?android:attr/selectableItemBackground"            android:padding="12dp"
+            android:padding="12dp"
+            android:background="@color/button_background_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -203,12 +224,22 @@
 
         <it.beppi.tristatetogglebutton_library.TriStateToggleButton
             android:id="@+id/switchBottom"
-            android:layout_width="40dp"
+            android:layout_width="32dp"
             android:layout_height="20dp"
-            android:layout_marginEnd="18dp"
+            android:layout_marginEnd="22dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+
+            />
+
+<!--        <androidx.appcompat.widget.SwitchCompat-->
+<!--            android:id="@+id/switch7"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/imageDrag"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

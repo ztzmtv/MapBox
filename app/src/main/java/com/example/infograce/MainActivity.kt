@@ -40,22 +40,28 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter
 
+        val isSwitchedAny: Boolean = adapter.items.filterIsInstance<RecyclerViewItems.Layers>().any { it.switch }
+        val isSwitchedAll: Boolean = adapter.items.filterIsInstance<RecyclerViewItems.Layers>().all { it.switch }
+        binding.switchBottom.isMidSelectable = isSwitchedAny && !isSwitchedAll
+
         addDataSet("")
 
         binding.imageAdd.setOnClickListener{
             adapter.addLayer()
         }
-
         binding.imageDelete.setOnClickListener {
             adapter.removeLayer()
         }
 
         binding.imageDrag.setOnClickListener {
-            adapter.items.filterIsInstance<RecyclerViewItems.Layers>().forEachIndexed(){index, value ->
+            dragState =! dragState
+            binding.imageDrag.isSelected = dragState
+            adapter.items.filterIsInstance<RecyclerViewItems.Layers>().forEachIndexed { index, value ->
                 value.draggable =! value.draggable
                 adapter.notifyDataSetChanged()
                 adapter.touchHelper.attachToRecyclerView(binding.recyclerView)
             }
+
             binding.switchBottom.visibility = if(adapter.items.filterIsInstance<RecyclerViewItems.Layers>().any { it.draggable }) View.GONE else View.VISIBLE
         }
 
@@ -66,14 +72,15 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
                     ToggleStatus.mid -> adapter.switchedMidAll()
                     ToggleStatus.on -> adapter.switchedOnAll()
                     null -> {}
+
                 }
                 adapter.notifyDataSetChanged()
             }
         }
 
         binding.imageSearch.setOnClickListener {
-//            searchState =! searchState
-            if (searchState) binding.imageSearch.setBackgroundColor(resources.getColor(R.color.green)) else binding.imageSearch.setBackgroundColor(resources.getColor(R.color.dark_blue_exp))
+            searchState =! searchState
+            binding.imageSearch.isSelected = searchState
             binding.expandableSearch.visibility = if(binding.expandableSearch.visibility == View.VISIBLE) View.GONE else View.VISIBLE
         }
 
@@ -88,6 +95,7 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
             }
         })
 
+
     }
 
     private fun addDataSet(search: String){
@@ -99,7 +107,7 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
         indirectSwitched = true
         val isSwitchedAll: Boolean = adapter.items.filterIsInstance<RecyclerViewItems.Layers>().all { it.switch }
         val isSwitchedAny: Boolean = adapter.items.filterIsInstance<RecyclerViewItems.Layers>().any { it.switch }
-
+        binding.switchBottom.isMidSelectable = isSwitchedAny && !isSwitchedAll
         if (isSwitchedAll) {
             binding.switchBottom.toggleOn()
         }

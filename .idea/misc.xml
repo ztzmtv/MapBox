@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.221875" />
         <entry key="..\:/AndStu/Infograce/app/src/main/res/drawable/center_to_gps.xml" value="0.1095" />
         <entry key="..\:/AndStu/Infograce/app/src/main/res/drawable/folder.xml" value="0.1095" />
         <entry key="..\:/AndStu/Infograce/app/src/main/res/drawable/grometry_collection.xml" value="0.1095" />
@@ -23,6 +24,15 @@
         <entry key="..\:/AndStu/Infograce/app/src/main/res/layout/main_fragment.xml" value="0.13333333333333333" />
         <entry key="..\:/AndStu/Infograce/app/src/main/res/layout/sec_fragment.xml" value="0.24682971014492755" />
         <entry key="..\:/AndStu/Infograce/app/src/main/res/menu/menu.xml" value="0.14375" />
+        <entry key="app/src/main/res/drawable/base_ripple.xml" value="0.2015" />
+        <entry key="app/src/main/res/drawable/center_to_gps.xml" value="0.2015" />
+        <entry key="app/src/main/res/drawable/drag_list_item.xml" value="0.2015" />
+        <entry key="app/src/main/res/drawable/layout_bg.xml" value="0.2015" />
+        <entry key="app/src/main/res/drawable/ripple.xml" value="0.2975" />
+        <entry key="app/src/main/res/drawable/waypoint.xml" value="0.2015" />
+        <entry key="app/src/main/res/layout/layer_group.xml" value="0.6024229074889867" />
+        <entry key="app/src/main/res/layout/layers_group.xml" value="0.19375" />
+        <entry key="app/src/main/res/layout/main_activity.xml" value="0.67" />
       </map>
     </option>
   </component>

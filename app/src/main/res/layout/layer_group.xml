@@ -49,8 +49,8 @@
             android:id="@+id/chevron"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="15dp"
-            android:padding="10dp"
+            android:layout_marginEnd="10dp"
+            android:padding="15dp"
             app:layout_constraintBottom_toBottomOf="@+id/iconView"
             app:layout_constraintEnd_toStartOf="@id/switch2"
             app:layout_constraintTop_toTopOf="@+id/iconView"
@@ -65,7 +65,8 @@
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/iconView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/iconView" />
+            app:layout_constraintTop_toTopOf="@+id/iconView"
+            />
 
         <ImageView
             android:id="@+id/invisView"
@@ -83,7 +84,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="invisible"
-            android:layout_marginEnd="25dp"
+            android:layout_marginEnd="15dp"
+            android:padding="10dp"
             app:layout_constraintBottom_toBottomOf="@+id/switch2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/switch2"
@@ -99,7 +101,7 @@
         android:background="@drawable/layout_bg"
         android:layout_marginStart="16dp"
         app:thumbColor='@color/green'
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleLine"
@@ -109,11 +111,11 @@
             android:id="@+id/transView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
+            android:layout_marginStart="58dp"
             android:layout_marginTop="3dp"
-            android:textSize="12sp"
             android:text="@string/app_name"
             android:textColor="@color/white60"
+            android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -122,7 +124,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:layout_marginEnd="17dp"
+            android:layout_marginEnd="22dp"
             android:textSize="12sp"
             android:text="@string/app_name"
             android:textColor="@color/white60"
@@ -133,14 +135,15 @@
             android:id="@+id/slider"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="48dp"
+            android:layout_marginStart="45dp"
             android:layout_marginTop="-5dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="-5dp"
-            android:valueFrom="0.0"
+            android:layout_marginEnd="9dp"
+            android:layout_marginBottom="30dp"
             android:value="60.0"
+            android:valueFrom="0.0"
             android:valueTo="100.0"
-            app:layout_constraintBottom_toTopOf="@+id/imageView5"
+            app:trackColorActive="@color/green"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/transView" />
@@ -149,13 +152,12 @@
             android:id="@+id/elemView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
             android:layout_marginBottom="11dp"
-            android:textSize="12sp"
             android:text="@string/app_name"
             android:textColor="@color/white60"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="@+id/transView" />
 
         <TextView
             android:id="@+id/zoomView"
@@ -173,34 +175,42 @@
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="25dp"
+            android:layout_marginEnd="11dp"
+            android:padding="7dp"
             android:src="@drawable/region_border_dash_view"
             app:layout_constraintBottom_toBottomOf="@+id/imageView4"
             app:layout_constraintEnd_toStartOf="@+id/imageView4"
             android:background="?android:attr/selectableItemBackground"
-            app:layout_constraintTop_toTopOf="@+id/imageView4" />
+            app:layout_constraintTop_toTopOf="@+id/imageView4"
+            android:clickable="true"
+            android:focusable="true"/>
 
         <ImageView
             android:id="@+id/imageView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="25dp"
+            android:layout_marginEnd="11dp"
+            android:padding="7dp"
             android:src="@drawable/note"
             app:layout_constraintBottom_toBottomOf="@+id/imageView5"
             app:layout_constraintEnd_toStartOf="@+id/imageView5"
             android:background="?android:attr/selectableItemBackground"
-            app:layout_constraintTop_toTopOf="@+id/imageView5" />
+            app:layout_constraintTop_toTopOf="@+id/imageView5"
+            android:clickable="true"
+            android:focusable="true" />
 
         <ImageView
             android:id="@+id/imageView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="25dp"
-            android:layout_marginBottom="7dp"
+            android:layout_marginEnd="12.5dp"
+            android:padding="7dp"
             android:src="@drawable/center_to_gps"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:background="?android:attr/selectableItemBackground"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:clickable="true"
+            android:focusable="true" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

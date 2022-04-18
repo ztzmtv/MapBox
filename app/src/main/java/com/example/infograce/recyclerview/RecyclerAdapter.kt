@@ -132,6 +132,10 @@ class RecyclerAdapter(private val listenerActivity: MainActivity): RecyclerView.
                         currentItem.visibility = !currentItem.visibility
                         notifyItemChanged(position)
                     }
+                    holder.binding.titleLine.setOnClickListener {
+                        currentItem.visibility = !currentItem.visibility
+                        notifyItemChanged(position)
+                    }
 
                     holder.binding.slider.addOnChangeListener { slider, value, fromUser ->
                         holder.binding.transView.setText("Прозрачность: ${value.toInt()}%")
@@ -189,7 +193,6 @@ class RecyclerAdapter(private val listenerActivity: MainActivity): RecyclerView.
                 is RecyclerViewItems.TitleSpannable -> R.layout.layer_group
                 is RecyclerViewItems.LayersGroup -> R.layout.layers_group
                 is RecyclerViewItems.Layers -> R.layout.layer_group
-
             }
         }
 
