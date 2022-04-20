@@ -1,31 +1,33 @@
 package com.example.infograce.recyclerview
 
+//import com.example.infograce.dataClass.Layers
+
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Typeface
 import android.text.Spannable
+import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.LinearInterpolator
+import android.view.animation.RotateAnimation
 import android.widget.Filter
 import android.widget.Filterable
+import androidx.core.text.clearSpans
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.example.infograce.MainActivity
 import com.example.infograce.R
 import com.example.infograce.dataClass.DataSource
-//import com.example.infograce.dataClass.Layers
-import com.example.infograce.databinding.LayerGroupBinding
-import java.util.*
-import kotlin.collections.ArrayList
-import android.text.style.ForegroundColorSpan
-import android.util.Log
-import androidx.core.text.clearSpans
-import com.example.infograce.MainActivity
 import com.example.infograce.dataClass.RecyclerViewItems
+import com.example.infograce.databinding.LayerGroupBinding
 import com.example.infograce.databinding.LayersGroupBinding
-import kotlinx.coroutines.joinAll
-import java.lang.IllegalArgumentException
+import java.util.*
+
 
 //import com.example.infograce.ui.main.MainFragment
 
@@ -35,12 +37,13 @@ class RecyclerAdapter(private val listenerActivity: MainActivity): RecyclerView.
 
     var items: MutableList<RecyclerViewItems> = ArrayList()
     var filteredItems: MutableList<RecyclerViewItems> = ArrayList()
-//    var filteredItemsFirst: MutableList<RecyclerViewItems.Layers> = ArrayList()
+//    var openedLayer: Boolean = false
+var isVisible: Boolean = false
     var queryText=""
 
     private val spanHighlight by lazy {
         ForegroundColorSpan(
-            Color.parseColor("#FF0027FF"))
+            Color.parseColor("#59BD87"))
     }
 
 
@@ -79,7 +82,6 @@ class RecyclerAdapter(private val listenerActivity: MainActivity): RecyclerView.
             )
             is RecyclerViewHolders.LayersViewHolder -> {
                 val currentItem = filteredItems[position]
-                Log.d("taggg","${items.size},${filteredItems.size}")
                 if (currentItem is RecyclerViewItems.Layers) {
                     holder.bind(currentItem as RecyclerViewItems.Layers, listenerActivity)
                     if (queryText.isNotEmpty()) {
@@ -90,6 +92,8 @@ class RecyclerAdapter(private val listenerActivity: MainActivity): RecyclerView.
                         if (startPos != -1) {
                             if (queryText.let { currentItem.title.title.contains(it, true) }) {
                                 currentItem.title.title.setSpan(
+//                                    ForegroundColorSpan(
+//                                        holder.itemView.context.resources.getColor(R.color.green)),
                                     spanHighlight,
                                     startPos,
                                     endPos,
@@ -102,7 +106,7 @@ class RecyclerAdapter(private val listenerActivity: MainActivity): RecyclerView.
                     }
                     holder.bind(currentItem, listenerActivity)
 
-                    val isVisible: Boolean = currentItem.visibility
+                    isVisible = currentItem.visibility
                     holder.binding.expandable.visibility =
                         if (isVisible) View.VISIBLE else View.GONE
 
@@ -128,23 +132,43 @@ class RecyclerAdapter(private val listenerActivity: MainActivity): RecyclerView.
 
                     holder.binding.switch2.isChecked = currentItem.switch
 
-                    holder.binding.chevron.setOnClickListener {
-                        currentItem.visibility = !currentItem.visibility
-                        notifyItemChanged(position)
-                    }
+//                    holder.binding.chevron.setOnClickListener {
+//                        currentItem.visibility = !currentItem.visibility
+//                        notifyItemChanged(position)
+//                    }
                     holder.binding.titleLine.setOnClickListener {
-                        currentItem.visibility = !currentItem.visibility
-                        notifyItemChanged(position)
-                    }
+                        if(currentItem.visibility){
+                            currentItem.visibility =! currentItem.visibility
+                        }else{
+                            closeLayers()
+                            currentItem.visibility =! currentItem.visibility
+                        }
 
-                    holder.binding.slider.addOnChangeListener { slider, value, fromUser ->
-                        holder.binding.transView.setText("Прозрачность: ${value.toInt()}%")
+//                        val rotate = RotateAnimation(
+//                            0F,
+//                            180F,
+//                            Animation.RELATIVE_TO_SELF,
+//                            0.5f,
+//                            Animation.RELATIVE_TO_SELF,
+//                            0.5f
+//                        )
+//                        rotate.duration = 1000
+//                        rotate.interpolator = LinearInterpolator()
+//                        holder.binding.chevron.startAnimation(rotate)
+
+
+                        notifyItemChanged(position)
+
                     }
 
                     holder.binding.titleLine.setOnLongClickListener() {
                         currentItem.enable = !currentItem.enable
                         notifyItemChanged(position)
                         true
+                    }
+
+                    holder.binding.slider.addOnChangeListener { slider, value, fromUser ->
+                        holder.binding.transView.setText("Прозрачность: ${value.toInt()}%")
                     }
 
                     holder.binding.dragView.setOnTouchListener { v, event ->
@@ -211,6 +235,21 @@ class RecyclerAdapter(private val listenerActivity: MainActivity): RecyclerView.
     }
     fun switchedMidAll(){
         items.filterIsInstance<RecyclerViewItems.Layers>().map { it.switch = it.switchSave }
+    }
+
+    private fun closeLayers() {
+        filteredItems.mapIndexed { index, t ->
+            if(t is RecyclerViewItems.Layers && t.visibility) {
+                t.visibility = false
+                notifyItemChanged(index)
+            }
+        }
+    }
+
+    fun setChanged() {
+        filteredItems.mapIndexed { index, t ->
+                notifyItemChanged(index)
+        }
     }
 
         fun addLayer() {

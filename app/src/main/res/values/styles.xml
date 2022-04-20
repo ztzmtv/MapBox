@@ -45,7 +45,9 @@
 </style>
 
     <style name="SwitchCompatTheme" >
-        <item name="colorControlActivated">@color/green</item>
+<!--        <item name="colorControlActivated">@color/green</item>-->
+        <item name="thumbTint">@color/switch_thumb</item>
+        <item name="trackTint">@color/switch_track</item>
     </style>
 
 </resources>

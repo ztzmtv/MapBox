@@ -8,6 +8,9 @@ import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.LinearInterpolator
+import android.view.animation.RotateAnimation
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.res.ResourcesCompat
@@ -51,6 +54,17 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
         }
         binding.imageDelete.setOnClickListener {
             adapter.removeLayer()
+            val rotate = RotateAnimation(
+                0F,
+                180F,
+                Animation.RELATIVE_TO_SELF,
+                0.5f,
+                Animation.RELATIVE_TO_SELF,
+                0.5f
+            )
+            rotate.duration = 1000
+            rotate.interpolator = LinearInterpolator()
+            binding.imageDrag.startAnimation(rotate)
         }
 
         binding.imageDrag.setOnClickListener {
@@ -61,7 +75,6 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
                 adapter.notifyDataSetChanged()
                 adapter.touchHelper.attachToRecyclerView(binding.recyclerView)
             }
-
             binding.switchBottom.visibility = if(adapter.items.filterIsInstance<RecyclerViewItems.Layers>().any { it.draggable }) View.GONE else View.VISIBLE
         }
 
@@ -72,7 +85,6 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
                     ToggleStatus.mid -> adapter.switchedMidAll()
                     ToggleStatus.on -> adapter.switchedOnAll()
                     null -> {}
-
                 }
                 adapter.notifyDataSetChanged()
             }
@@ -94,6 +106,7 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
             override fun afterTextChanged(s: Editable?) {
             }
         })
+
 
 
     }
