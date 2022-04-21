@@ -6,6 +6,7 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Typeface
 import android.text.Spannable
+import android.text.style.BackgroundColorSpan
 import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
@@ -42,7 +43,7 @@ var isVisible: Boolean = false
     var queryText=""
 
     private val spanHighlight by lazy {
-        ForegroundColorSpan(
+        BackgroundColorSpan(
             Color.parseColor("#59BD87"))
     }
 
@@ -114,10 +115,12 @@ var isVisible: Boolean = false
                         holder.binding.titleView.setTypeface(null, Typeface.BOLD)
                         holder.binding.titleView.setTextColor(Color.parseColor("#59BD87"))
                         holder.binding.iconView.setColorFilter(Color.parseColor("#59BD87"))
+                        holder.binding.chevron.setImageResource(R.drawable.chevron_reverse)
                     } else {
                         holder.binding.titleView.setTypeface(null, Typeface.NORMAL)
                         holder.binding.titleView.setTextColor(Color.WHITE)
                         holder.binding.iconView.setColorFilter(Color.WHITE)
+                        holder.binding.chevron.setImageResource(R.drawable.chevron_right)
                     }
 
                     val isEnable: Boolean = currentItem.enable
@@ -136,12 +139,13 @@ var isVisible: Boolean = false
 //                        currentItem.visibility = !currentItem.visibility
 //                        notifyItemChanged(position)
 //                    }
+
                     holder.binding.titleLine.setOnClickListener {
                         if(currentItem.visibility){
-                            currentItem.visibility =! currentItem.visibility
+                            currentItem.visibility = false
                         }else{
                             closeLayers()
-                            currentItem.visibility =! currentItem.visibility
+                            currentItem.visibility = true
                         }
 
 //                        val rotate = RotateAnimation(
@@ -155,6 +159,7 @@ var isVisible: Boolean = false
 //                        rotate.duration = 1000
 //                        rotate.interpolator = LinearInterpolator()
 //                        holder.binding.chevron.startAnimation(rotate)
+
 
 
                         notifyItemChanged(position)
@@ -210,6 +215,7 @@ var isVisible: Boolean = false
                 else -> throw IllegalArgumentException("Invalid ViewType Provided ")
             }
         }
+
 
 
         override fun getItemViewType(position: Int): Int {

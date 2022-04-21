@@ -1,25 +1,21 @@
 package com.example.infograce
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
-import android.text.Spannable
 import android.text.TextWatcher
-import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.LinearInterpolator
-import android.view.animation.RotateAnimation
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.infograce.dataClass.DataSource
 import com.example.infograce.dataClass.RecyclerViewItems
 import com.example.infograce.databinding.MainActivityBinding
 import com.example.infograce.recyclerview.RecyclerAdapter
-import it.beppi.tristatetogglebutton_library.TriStateToggleButton.ToggleStatus
+import com.rm.rmswitch.RMTristateSwitch
+import com.rm.rmswitch.RMTristateSwitch.RMTristateSwitchObserver
 
 
 class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.OnQueryTextListener{
@@ -43,10 +39,6 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter
 
-        val isSwitchedAny: Boolean = adapter.items.filterIsInstance<RecyclerViewItems.Layers>().any { it.switch }
-        val isSwitchedAll: Boolean = adapter.items.filterIsInstance<RecyclerViewItems.Layers>().all { it.switch }
-        binding.switchBottom.isMidSelectable = isSwitchedAny && !isSwitchedAll
-
         addDataSet("")
 
         binding.imageAdd.setOnClickListener{
@@ -54,17 +46,6 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
         }
         binding.imageDelete.setOnClickListener {
             adapter.removeLayer()
-            val rotate = RotateAnimation(
-                0F,
-                180F,
-                Animation.RELATIVE_TO_SELF,
-                0.5f,
-                Animation.RELATIVE_TO_SELF,
-                0.5f
-            )
-            rotate.duration = 1000
-            rotate.interpolator = LinearInterpolator()
-            binding.imageDrag.startAnimation(rotate)
         }
 
         binding.imageDrag.setOnClickListener {
@@ -75,23 +56,49 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
                 adapter.notifyDataSetChanged()
                 adapter.touchHelper.attachToRecyclerView(binding.recyclerView)
             }
-            binding.switchBottom.visibility = if(adapter.items.filterIsInstance<RecyclerViewItems.Layers>().any { it.draggable }) View.GONE else View.VISIBLE
+            binding.commonSwitch.visibility = if(dragState) View.GONE else View.VISIBLE
         }
 
-        binding.switchBottom.setOnToggleChanged { toggleStatus, _, _ ->
-            if (!indirectSwitched) {
-                when (binding.switchBottom.toggleStatus) {
-                    ToggleStatus.off -> adapter.switchedOffAll()
-                    ToggleStatus.mid -> adapter.switchedMidAll()
-                    ToggleStatus.on -> adapter.switchedOnAll()
-                    null -> {}
+        fun switchFun(switchView: RMTristateSwitch, isSwitchedAny1: Boolean, isSwitchedAll1: Boolean){
+            when (switchView.state) {
+                RMTristateSwitch.STATE_LEFT -> adapter.switchedOffAll()
+                RMTristateSwitch.STATE_MIDDLE -> {
+                    if(isSwitchedAny1 && !isSwitchedAll1) {
+                        adapter.switchedMidAll()
+                    } else {
+                        switchView.state =  RMTristateSwitch.STATE_RIGHT
+                        switchFun(switchView, isSwitchedAny1, !isSwitchedAll1)
+                    }
                 }
-                adapter.notifyDataSetChanged()
+                RMTristateSwitch.STATE_RIGHT -> adapter.switchedOnAll()
             }
+            adapter.notifyDataSetChanged()
+        }
+
+        binding.commonSwitch.addSwitchObserver(RMTristateSwitchObserver { switchView, state ->
+            val isSwitchedAny1: Boolean = adapter.items.filterIsInstance<RecyclerViewItems.Layers>().any { it.switchSave }
+            val isSwitchedAll1: Boolean = adapter.items.filterIsInstance<RecyclerViewItems.Layers>().all { it.switchSave }
+            if (!indirectSwitched) {
+                switchFun(switchView, isSwitchedAny1, isSwitchedAll1)
+            }
+        })
+
+        fun showSoftKeyboard(view: View) {
+            if (view.requestFocus()) {
+                val imm: InputMethodManager =
+                    getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+            }
+        }
+        fun hideSoftKeyboard(view: View) {
+            val imm =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
 
         binding.imageSearch.setOnClickListener {
             searchState =! searchState
+            if (searchState) showSoftKeyboard(binding.editSearch) else hideSoftKeyboard(binding.editSearch)
             binding.imageSearch.isSelected = searchState
             binding.expandableSearch.visibility = if(binding.expandableSearch.visibility == View.VISIBLE) View.GONE else View.VISIBLE
         }
@@ -101,13 +108,10 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 adapter.filter.filter(s)
-//                highlight()
             }
             override fun afterTextChanged(s: Editable?) {
             }
         })
-
-
 
     }
 
@@ -120,15 +124,14 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
         indirectSwitched = true
         val isSwitchedAll: Boolean = adapter.items.filterIsInstance<RecyclerViewItems.Layers>().all { it.switch }
         val isSwitchedAny: Boolean = adapter.items.filterIsInstance<RecyclerViewItems.Layers>().any { it.switch }
-        binding.switchBottom.isMidSelectable = isSwitchedAny && !isSwitchedAll
         if (isSwitchedAll) {
-            binding.switchBottom.toggleOn()
+            binding.commonSwitch.state = RMTristateSwitch.STATE_RIGHT
         }
         if (isSwitchedAny && !isSwitchedAll) {
-            binding.switchBottom.toggleMid()
+            binding.commonSwitch.state = RMTristateSwitch.STATE_MIDDLE
         }
         if (!isSwitchedAny) {
-            binding.switchBottom.toggleOff()
+            binding.commonSwitch.state = RMTristateSwitch.STATE_LEFT
         }
         indirectSwitched = false
     }
