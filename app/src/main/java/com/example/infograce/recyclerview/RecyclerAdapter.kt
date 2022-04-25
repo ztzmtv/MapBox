@@ -1,25 +1,18 @@
 package com.example.infograce.recyclerview
 
-//import com.example.infograce.dataClass.Layers
 
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Typeface
 import android.text.Spannable
 import android.text.style.BackgroundColorSpan
-import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.LinearInterpolator
-import android.view.animation.RotateAnimation
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.core.text.clearSpans
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.infograce.MainActivity
 import com.example.infograce.R
@@ -30,17 +23,17 @@ import com.example.infograce.databinding.LayersGroupBinding
 import java.util.*
 
 
-//import com.example.infograce.ui.main.MainFragment
 
 
-class RecyclerAdapter(private val listenerActivity: MainActivity): RecyclerView.Adapter<RecyclerViewHolders>(), Filterable{
+class RecyclerAdapter(private val listenerActivity: MainActivity, private val gestureCallbacks: GestureCallbacks): RecyclerView.Adapter<RecyclerViewHolders>(), Filterable{
 
 
     var items: MutableList<RecyclerViewItems> = ArrayList()
     var filteredItems: MutableList<RecyclerViewItems> = ArrayList()
-//    var openedLayer: Boolean = false
-var isVisible: Boolean = false
+    var isDraggable: Boolean = false
+    var isVisible: Boolean = false
     var queryText=""
+
 
     private val spanHighlight by lazy {
         BackgroundColorSpan(
@@ -48,31 +41,13 @@ var isVisible: Boolean = false
     }
 
 
-//    class ViewHolder constructor(
-//        itemView: View
-//    ): RecyclerView.ViewHolder(itemView){
-//        val binding = LayerGroupBinding.bind(itemView)
-//        fun bind(layers: RecyclerViewItems, listenerActivity: MainActivity) = with(binding){
-//            titleView.text = layers.title.title
-//            transView.text = layers.trans
-//            syncView.text = layers.sync
-//            elemView.text = layers.elem
-//            zoomView.text = layers.zoom
-//            iconView.setImageResource(layers.icon)
-//
-//            switch2.setOnClickListener {
-//                layers.switchSave = switch2.isChecked
-//                listenerActivity.onSwitched()
-//            }
-//            switch2.setOnCheckedChangeListener { buttonView, isChecked ->
-//                layers.switch = isChecked
-//            }
+//    override fun getItemViewType(position: Int): Int {
+//        return if (items[position] is RecyclerViewItems.LayersGroup) {
+//            R.layout.layers_group
+//        } else {
+//            R.layout.layer_group
 //        }
-//
 //    }
-
-
-
 
     @SuppressLint("ClickableViewAccessibility", "SetTextI18n")
     override fun onBindViewHolder(holder: RecyclerViewHolders, position: Int) {
@@ -84,7 +59,7 @@ var isVisible: Boolean = false
             is RecyclerViewHolders.LayersViewHolder -> {
                 val currentItem = filteredItems[position]
                 if (currentItem is RecyclerViewItems.Layers) {
-                    holder.bind(currentItem as RecyclerViewItems.Layers, listenerActivity)
+                    holder.bind(currentItem as RecyclerViewItems.Layers, listenerActivity, gestureCallbacks)
                     if (queryText.isNotEmpty()) {
                         val startPos =
                             currentItem.title.title.toString().lowercase()
@@ -93,8 +68,6 @@ var isVisible: Boolean = false
                         if (startPos != -1) {
                             if (queryText.let { currentItem.title.title.contains(it, true) }) {
                                 currentItem.title.title.setSpan(
-//                                    ForegroundColorSpan(
-//                                        holder.itemView.context.resources.getColor(R.color.green)),
                                     spanHighlight,
                                     startPos,
                                     endPos,
@@ -105,7 +78,7 @@ var isVisible: Boolean = false
                     } else {
                         currentItem.title.title.clearSpans()
                     }
-                    holder.bind(currentItem, listenerActivity)
+                    holder.bind(currentItem, listenerActivity, gestureCallbacks)
 
                     isVisible = currentItem.visibility
                     holder.binding.expandable.visibility =
@@ -127,18 +100,12 @@ var isVisible: Boolean = false
                     holder.binding.titleLine.alpha = if (isEnable) 1f else 0.5f
                     holder.binding.invisView.visibility = if (isEnable) View.GONE else View.VISIBLE
 
-                    val isDraggable: Boolean = currentItem.draggable
                     holder.binding.switch2.visibility =
                         if (isDraggable) View.INVISIBLE else View.VISIBLE
                     holder.binding.dragView.visibility =
                         if (isDraggable) View.VISIBLE else View.GONE
 
                     holder.binding.switch2.isChecked = currentItem.switch
-
-//                    holder.binding.chevron.setOnClickListener {
-//                        currentItem.visibility = !currentItem.visibility
-//                        notifyItemChanged(position)
-//                    }
 
                     holder.binding.titleLine.setOnClickListener {
                         if(currentItem.visibility){
@@ -147,23 +114,7 @@ var isVisible: Boolean = false
                             closeLayers()
                             currentItem.visibility = true
                         }
-
-//                        val rotate = RotateAnimation(
-//                            0F,
-//                            180F,
-//                            Animation.RELATIVE_TO_SELF,
-//                            0.5f,
-//                            Animation.RELATIVE_TO_SELF,
-//                            0.5f
-//                        )
-//                        rotate.duration = 1000
-//                        rotate.interpolator = LinearInterpolator()
-//                        holder.binding.chevron.startAnimation(rotate)
-
-
-
                         notifyItemChanged(position)
-
                     }
 
                     holder.binding.titleLine.setOnLongClickListener() {
@@ -176,12 +127,12 @@ var isVisible: Boolean = false
                         holder.binding.transView.setText("Прозрачность: ${value.toInt()}%")
                     }
 
-                    holder.binding.dragView.setOnTouchListener { v, event ->
-                        if (event.actionMasked == MotionEvent.ACTION_DOWN) {
-                            touchHelper.startDrag(holder)
-                        }
-                        false
-                    }
+//                    holder.binding.dragView.setOnTouchListener { v, event ->
+//                        if (event.actionMasked == MotionEvent.ACTION_DOWN) {
+//                            listenerActivity.itemTouchHelper.startDrag(holder)
+//                        }
+//                        false
+//                    }
 
                 }
             }
@@ -190,16 +141,10 @@ var isVisible: Boolean = false
 
 
 
-
-
         override fun getItemCount(): Int {
             return filteredItems.size
         }
 
-        //    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-//        val view = LayoutInflater.from(parent.context).inflate(R.layout.layer_group, parent,false)
-//        return ViewHolder(view)
-//    }
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolders {
             return when (viewType) {
                 R.layout.layer_group -> RecyclerViewHolders.LayersViewHolder(
@@ -229,8 +174,6 @@ var isVisible: Boolean = false
         fun submitList(list: MutableList<RecyclerViewItems>) {
             items = list
             filteredItems = list
-//            filteredItems = list.toMutableList()
-//            filteredItems[list.indexOf(RecyclerViewItems.LayersGroup("Общие слои"))] = null
         }
 
     fun switchedOffAll(){
@@ -241,6 +184,12 @@ var isVisible: Boolean = false
     }
     fun switchedMidAll(){
         items.filterIsInstance<RecyclerViewItems.Layers>().map { it.switch = it.switchSave }
+    }
+    fun resetSwitchSaveAll(){
+        items.filterIsInstance<RecyclerViewItems.Layers>().map { it.switchSave = false }
+    }
+    fun switchSaveToSwitch(){
+        items.filterIsInstance<RecyclerViewItems.Layers>().map { it.switchSave = it.switch}
     }
 
     private fun closeLayers() {
@@ -260,31 +209,34 @@ var isVisible: Boolean = false
 
         fun addLayer() {
             items.add(DataSource.addLayer[0])
-            notifyItemChanged(itemCount)
+            notifyItemChanged(items.size)
         }
 
         fun removeLayer() {
             items.removeLast()
-            notifyItemChanged(itemCount)
+            notifyItemChanged(items.size)
         }
 
-        val touchHelper =
-            ItemTouchHelper(object :
-                ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
-                override fun onMove(
-                    p0: RecyclerView,
-                    p1: RecyclerView.ViewHolder,
-                    p2: RecyclerView.ViewHolder
-                ): Boolean {
-                    val sourcePosition = p1.adapterPosition
-                    val targetPosition = p2.adapterPosition
-                    Collections.swap(items, sourcePosition, targetPosition)
-                    notifyItemMoved(sourcePosition, targetPosition)
-                    return true
-                }
-                override fun onSwiped(p0: RecyclerView.ViewHolder, p1: Int) {
-                }
-            })
+//        val touchHelper =
+//            ItemTouchHelper(object :
+//                ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
+//                override fun onMove(
+//                    p0: RecyclerView,
+//                    p1: RecyclerView.ViewHolder,
+//                    p2: RecyclerView.ViewHolder
+//                ): Boolean {
+//                    val sourcePosition = p1.adapterPosition
+//                    val targetPosition = p2.adapterPosition
+//                    Collections.swap(filteredItems, sourcePosition, targetPosition)
+//                    notifyItemMoved(sourcePosition, targetPosition)
+//                    return true
+//                }
+//                override fun onSwiped(p0: RecyclerView.ViewHolder, p1: Int) {
+//                }
+//                override fun isLongPressDragEnabled(): Boolean {
+//                    return false
+//                }
+//            })
 
         interface Listener {
             fun onSwitched()
@@ -311,7 +263,7 @@ var isVisible: Boolean = false
 
             @SuppressLint("NotifyDataSetChanged")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                Log.d("tagg","publish $results")
+                Log.d("tagg","publish ${results?.values}")
                 filteredItems = if (results?.values == null)
                     ArrayList()
                 else
@@ -321,4 +273,21 @@ var isVisible: Boolean = false
             }
         }
     }
+
+    fun onItemMoved(fromPosition: Int, toPosition: Int): Boolean {
+        // This is what does the neat drag swapping animation.
+        // Source: https://medium.com/@ipaulpro/drag-and-swipe-with-recyclerview-b9456d2b1aaf
+        if (fromPosition < toPosition) {
+            for (i in fromPosition until toPosition) {
+                Collections.swap(items, i, i + 1)
+            }
+        } else {
+            for (i in fromPosition downTo toPosition + 1) {
+                Collections.swap(items, i, i - 1)
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition)
+        return true
+    }
+
 }

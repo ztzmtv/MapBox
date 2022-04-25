@@ -54,7 +54,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/iconView"
             app:layout_constraintEnd_toStartOf="@id/switch2"
             app:layout_constraintTop_toTopOf="@+id/iconView"
-            android:background="?android:attr/selectableItemBackground"
             app:srcCompat="@drawable/chevron_right" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial

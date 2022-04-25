@@ -3,6 +3,12 @@ package com.example.infograce.dataClass
 import android.text.Spannable
 import android.text.SpannableString
 
+enum class Group {
+    RED,
+    BLUE
+}
+
+
 sealed class RecyclerViewItems {
 
     data class Layers(
@@ -16,7 +22,8 @@ sealed class RecyclerViewItems {
         var enable: Boolean = true,
         var draggable: Boolean = false,
         var switch: Boolean = false,
-        var switchSave: Boolean = false
+        var switchSave: Boolean = false,
+        val group: Group
     ):RecyclerViewItems()
 
     data class TitleSpannable (
@@ -27,6 +34,7 @@ sealed class RecyclerViewItems {
 
     data class LayersGroup(
         val titleGroup: String,
+        val group: Group
     ):RecyclerViewItems()
 
 }

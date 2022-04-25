@@ -1,12 +1,15 @@
 package com.example.infograce.recyclerview
 
+import android.annotation.SuppressLint
+import android.view.MotionEvent
+import android.view.View
+import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.example.infograce.MainActivity
 import com.example.infograce.dataClass.RecyclerViewItems
 import com.example.infograce.databinding.LayerGroupBinding
 import com.example.infograce.databinding.LayersGroupBinding
-import com.example.infograce.databinding.MainActivityBinding
 
 sealed class RecyclerViewHolders(binding: ViewBinding, listenerActivity: MainActivity): RecyclerView.ViewHolder(binding.root) {
 
@@ -16,21 +19,35 @@ sealed class RecyclerViewHolders(binding: ViewBinding, listenerActivity: MainAct
         }
     }
 
-    class LayersViewHolder(val binding: LayerGroupBinding, private val listenerActivity: MainActivity): RecyclerViewHolders(binding,listenerActivity){
-        fun bind(layers: RecyclerViewItems.Layers, listenerActivity: MainActivity) = with(binding){
-            titleView.text = layers.title.title
-            transView.text = layers.trans
-            syncView.text = layers.sync
-            elemView.text = layers.elem
-            zoomView.text = layers.zoom
-            iconView.setImageResource(layers.icon)
+    class LayersViewHolder(
+        val binding: LayerGroupBinding, private val listenerActivity: MainActivity): RecyclerViewHolders(binding,listenerActivity){
+
+        private var itemLayer: RecyclerViewItems.Layers? = null
+        val layer get() = itemLayer!!
+
+        @SuppressLint("ClickableViewAccessibility")
+        fun bind(layer: RecyclerViewItems.Layers, listenerActivity: MainActivity, gestureCallbacks: GestureCallbacks) = with(binding){
+            itemLayer = layer
+            titleView.text = layer.title.title
+            transView.text = layer.trans
+            syncView.text = layer.sync
+            elemView.text = layer.elem
+            zoomView.text = layer.zoom
+            iconView.setImageResource(layer.icon)
 
             switch2.setOnClickListener {
-                layers.switchSave = switch2.isChecked
                 listenerActivity.onSwitched()
+                layer.switchSave = switch2.isChecked
             }
             switch2.setOnCheckedChangeListener { buttonView, isChecked ->
-                layers.switch = isChecked
+                layer.switch = isChecked
+            }
+
+            binding.dragView.setOnTouchListener { _, event ->
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    gestureCallbacks.onStartDrag(this@LayersViewHolder)
+                }
+                false
             }
         }
     }
