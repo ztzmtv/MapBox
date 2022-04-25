@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.infograce.MainActivity
 import com.example.infograce.R
 import com.example.infograce.dataClass.DataSource
+import com.example.infograce.dataClass.Group
 import com.example.infograce.dataClass.RecyclerViewItems
 import com.example.infograce.databinding.LayerGroupBinding
 import com.example.infograce.databinding.LayersGroupBinding
@@ -164,7 +165,7 @@ class RecyclerAdapter(private val listenerActivity: MainActivity, private val ge
 
 
         override fun getItemViewType(position: Int): Int {
-            return when (items[position]) {
+            return when (filteredItems[position]) {
                 is RecyclerViewItems.TitleSpannable -> R.layout.layer_group
                 is RecyclerViewItems.LayersGroup -> R.layout.layers_group
                 is RecyclerViewItems.Layers -> R.layout.layer_group
@@ -248,7 +249,7 @@ class RecyclerAdapter(private val listenerActivity: MainActivity, private val ge
                 val charString = constraint?.toString() ?: ""
                 queryText = charString
                     val filteredList = ArrayList<RecyclerViewItems>()
-                    items.filterIsInstance<RecyclerViewItems.Layers>().filter {
+                    filteredItems.filterIsInstance<RecyclerViewItems.Layers>().filter {
                                 (it.title.title.toString().lowercase()
                                     .contains(constraint.toString().lowercase()!!)) or
                                         (it.title.title.toString().lowercase()
@@ -258,7 +259,8 @@ class RecyclerAdapter(private val listenerActivity: MainActivity, private val ge
 //                filteredItems = filteredList.toMutableList()
                 filteredItems = filteredList
                 Log.d("tagg","return")
-                return FilterResults().apply { values = if (charString.isEmpty()) items else filteredItems }
+                filteredItems.add(filteredItems.indexOf(filteredItems.filterIsInstance<RecyclerViewItems.Layers>().first { it.group == Group.RED}),items.first { it is RecyclerViewItems.LayersGroup})
+                return FilterResults().apply { values = if (charString.isEmpty()) items else   filteredItems}
             }
 
             @SuppressLint("NotifyDataSetChanged")
@@ -275,8 +277,6 @@ class RecyclerAdapter(private val listenerActivity: MainActivity, private val ge
     }
 
     fun onItemMoved(fromPosition: Int, toPosition: Int): Boolean {
-        // This is what does the neat drag swapping animation.
-        // Source: https://medium.com/@ipaulpro/drag-and-swipe-with-recyclerview-b9456d2b1aaf
         if (fromPosition < toPosition) {
             for (i in fromPosition until toPosition) {
                 Collections.swap(items, i, i + 1)

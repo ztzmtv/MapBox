@@ -14,7 +14,7 @@ class DataSource {
                     "Синхр.: 12.02.2022",
                     "Эл-ов: 23",
                     "Зум: 16-18",
-                    group = Group.BLUE
+                    Group.BLUE
                 )
             )
             list.add(
@@ -25,7 +25,7 @@ class DataSource {
                     "Синхр.: 12.02.2022",
                     "Эл-ов: 23",
                     "Зум: 16-18",
-                    group = Group.BLUE
+                    Group.BLUE
                 )
             )
             list.add(
@@ -36,7 +36,7 @@ class DataSource {
                     "Синхр.: 12.02.2022",
                     "Эл-ов: 23",
                     "Зум: 16-18",
-                    group = Group.BLUE
+                    Group.BLUE
                 )
             )
             list.add(
@@ -47,7 +47,7 @@ class DataSource {
                     "Синхр.: 12.02.2022",
                     "Эл-ов: 23",
                     "Зум: 16-18",
-                    group = Group.BLUE
+                    Group.BLUE
                 )
             )
             list.add(
@@ -58,13 +58,13 @@ class DataSource {
                     "Синхр.: 12.02.2022",
                     "Эл-ов: 23",
                     "Зум: 16-18",
-                    group = Group.BLUE
+                    Group.BLUE
                 )
             )
             list.add(
                 RecyclerViewItems.LayersGroup(
                     "Общие слои",
-                    group = Group.RED
+                    Group.RED
                 )
             )
             list.add(
@@ -75,7 +75,7 @@ class DataSource {
                     "Синхр.: 12.02.2022",
                     "Эл-ов: 23",
                     "Зум: 16-18",
-                    group = Group.RED
+                    Group.RED
                 )
             )
             list.add(
@@ -86,7 +86,7 @@ class DataSource {
                     "Синхр.: 12.02.2022",
                     "Эл-ов: 23",
                     "Зум: 16-18",
-                    group = Group.RED
+                    Group.RED
                 )
             )
             list.add(
@@ -97,7 +97,7 @@ class DataSource {
                     "Синхр.: 12.02.2022",
                     "Эл-ов: 23",
                     "Зум: 16-18",
-                    group = Group.RED
+                    Group.RED
                 )
             )
             list.add(
@@ -108,7 +108,7 @@ class DataSource {
                     "Синхр.: 12.02.2022",
                     "Эл-ов: 23",
                     "Зум: 16-18",
-                    group = Group.RED
+                    Group.RED
                 )
             )
             list.add(
@@ -119,7 +119,7 @@ class DataSource {
                     "Синхр.: 12.02.2022",
                     "Эл-ов: 23",
                     "Зум: 16-18",
-                    group = Group.RED
+                     Group.RED
                 )
             )
             list.add(
@@ -130,7 +130,7 @@ class DataSource {
                     "Синхр.: 12.02.2022",
                     "Эл-ов: 23",
                     "Зум: 16-18",
-                    group = Group.RED
+                    Group.RED
                 )
             )
             list.add(
@@ -141,7 +141,7 @@ class DataSource {
                     "Синхр.: 12.02.2022",
                     "Эл-ов: 23",
                     "Зум: 16-18",
-                    group = Group.RED
+                    Group.RED
                 )
             )
             return list
@@ -154,7 +154,7 @@ class DataSource {
                 "Синхр.: 12.02.2022",
                 "Эл-ов: 23",
                 "Зум: 16-18",
-                group = Group.RED
+                Group.RED
             ))
     }
 

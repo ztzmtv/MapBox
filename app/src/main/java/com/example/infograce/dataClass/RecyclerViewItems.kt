@@ -18,12 +18,12 @@ sealed class RecyclerViewItems {
         val sync: String,
         val elem: String,
         val zoom: String,
+        val group: Group,
         var visibility: Boolean = false,
         var enable: Boolean = true,
         var draggable: Boolean = false,
         var switch: Boolean = false,
         var switchSave: Boolean = false,
-        val group: Group
     ):RecyclerViewItems()
 
     data class TitleSpannable (

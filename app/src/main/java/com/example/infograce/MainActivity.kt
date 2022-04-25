@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
             if(dragState) itemTouchHelper.attachToRecyclerView(binding.recyclerView) else itemTouchHelper.attachToRecyclerView(null)
             binding.commonSwitch.visibility = if(dragState) View.GONE else View.VISIBLE
             adapter.notifyDataSetChanged()
-            Log.d("taggg","${adapter.items.size} ${adapter.items}\n${adapter.filteredItems.size} ${adapter.filteredItems.map{it::class.simpleName}}")
+            Log.d("taggg","\n ${adapter.items.size} ${adapter.items.map{it::class.simpleName}}\n${adapter.filteredItems.size} ${adapter.filteredItems.map{it::class.simpleName}}")
 
         }
 
