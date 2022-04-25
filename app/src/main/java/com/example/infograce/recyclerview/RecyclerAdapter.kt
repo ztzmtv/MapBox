@@ -259,7 +259,7 @@ class RecyclerAdapter(private val listenerActivity: MainActivity, private val ge
 //                filteredItems = filteredList.toMutableList()
                 filteredItems = filteredList
                 Log.d("tagg","return")
-                filteredItems.add(filteredItems.indexOf(filteredItems.filterIsInstance<RecyclerViewItems.Layers>().first { it.group == Group.RED}),items.first { it is RecyclerViewItems.LayersGroup})
+//                filteredItems.add(filteredItems.indexOf(filteredItems.filterIsInstance<RecyclerViewItems.Layers>().first { it.group == Group.RED}),items.first { it is RecyclerViewItems.LayersGroup})
                 return FilterResults().apply { values = if (charString.isEmpty()) items else   filteredItems}
             }
 
