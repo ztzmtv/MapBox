@@ -7,6 +7,12 @@ class DataSource {
         fun createDataSet(search: String):ArrayList<RecyclerViewItems> {
             var list = ArrayList<RecyclerViewItems>()
             list.add(
+                RecyclerViewItems.LayersGroup(
+                    "Последние слои",
+                    Group.BLUE
+                )
+            )
+            list.add(
                 RecyclerViewItems.Layers(
                     R.drawable.grometry_collection,
                     RecyclerViewItems.TitleSpannable("Слой делян"),

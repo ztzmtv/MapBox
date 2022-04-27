@@ -3,7 +3,10 @@ package com.example.infograce.recyclerview
 import android.annotation.SuppressLint
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.NonNull
+import androidx.core.view.marginTop
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.example.infograce.MainActivity
@@ -13,9 +16,12 @@ import com.example.infograce.databinding.LayersGroupBinding
 
 sealed class RecyclerViewHolders(binding: ViewBinding, listenerActivity: MainActivity): RecyclerView.ViewHolder(binding.root) {
 
-    class LayersGroupViewHolder(private val binding: LayersGroupBinding,private val listenerActivity: MainActivity): RecyclerViewHolders(binding, listenerActivity){
-        fun bind(title: RecyclerViewItems.LayersGroup, listenerActivity: MainActivity){
-            binding.textViewTitle.text = title.titleGroup
+    class LayersGroupViewHolder(val binding: LayersGroupBinding,private val listenerActivity: MainActivity): RecyclerViewHolders(binding, listenerActivity){
+        fun bind(title: RecyclerViewItems.LayersGroup, listenerActivity: MainActivity)= with(binding){
+            textViewTitle.text = title.titleGroup
+
+
+
         }
     }
 
@@ -31,8 +37,8 @@ sealed class RecyclerViewHolders(binding: ViewBinding, listenerActivity: MainAct
             titleView.text = layer.title.title
             transView.text = layer.trans
             syncView.text = layer.sync
-            elemView.text = layer.elem
-            zoomView.text = layer.zoom
+//            elemView.text = layer.elem
+//            zoomView.text = layer.zoom
             iconView.setImageResource(layer.icon)
 
             switch2.setOnClickListener {

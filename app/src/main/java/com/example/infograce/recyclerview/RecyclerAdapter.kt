@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.core.text.clearSpans
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import com.example.infograce.MainActivity
 import com.example.infograce.R
@@ -22,8 +23,7 @@ import com.example.infograce.dataClass.RecyclerViewItems
 import com.example.infograce.databinding.LayerGroupBinding
 import com.example.infograce.databinding.LayersGroupBinding
 import java.util.*
-
-
+import kotlin.collections.ArrayList
 
 
 class RecyclerAdapter(private val listenerActivity: MainActivity, private val gestureCallbacks: GestureCallbacks): RecyclerView.Adapter<RecyclerViewHolders>(), Filterable{
@@ -31,6 +31,8 @@ class RecyclerAdapter(private val listenerActivity: MainActivity, private val ge
 
     var items: MutableList<RecyclerViewItems> = ArrayList()
     var filteredItems: MutableList<RecyclerViewItems> = ArrayList()
+    var filteredItems2: MutableList<RecyclerViewItems> = ArrayList()
+
     var isDraggable: Boolean = false
     var isVisible: Boolean = false
     var queryText=""
@@ -53,10 +55,21 @@ class RecyclerAdapter(private val listenerActivity: MainActivity, private val ge
     @SuppressLint("ClickableViewAccessibility", "SetTextI18n")
     override fun onBindViewHolder(holder: RecyclerViewHolders, position: Int) {
         when (holder) {
-            is RecyclerViewHolders.LayersGroupViewHolder -> holder.bind(
-                items[position] as RecyclerViewItems.LayersGroup,
-                listenerActivity
-            )
+            is RecyclerViewHolders.LayersGroupViewHolder -> {
+                holder.bind(
+                    filteredItems[position] as RecyclerViewItems.LayersGroup,
+                    listenerActivity
+                )
+                if (filteredItems[position] == filteredItems[0])
+                    holder.binding.line.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                        setMargins(0, 0, 0, 0)
+                    }
+//                holder.bind(
+//                    items[position] as RecyclerViewItems.LayersGroup,
+//                    listenerActivity
+//                )
+
+            }
             is RecyclerViewHolders.LayersViewHolder -> {
                 val currentItem = filteredItems[position]
                 if (currentItem is RecyclerViewItems.Layers) {
@@ -85,6 +98,9 @@ class RecyclerAdapter(private val listenerActivity: MainActivity, private val ge
                     holder.binding.expandable.visibility =
                         if (isVisible) View.VISIBLE else View.GONE
 
+//                    Log.d("tagg","change ${filteredItems.map{it::class.simpleName}}")
+
+
                     if (isVisible) {
                         holder.binding.titleView.setTypeface(null, Typeface.BOLD)
                         holder.binding.titleView.setTextColor(Color.parseColor("#59BD87"))
@@ -96,6 +112,7 @@ class RecyclerAdapter(private val listenerActivity: MainActivity, private val ge
                         holder.binding.iconView.setColorFilter(Color.WHITE)
                         holder.binding.chevron.setImageResource(R.drawable.chevron_right)
                     }
+
 
                     val isEnable: Boolean = currentItem.enable
                     holder.binding.titleLine.alpha = if (isEnable) 1f else 0.5f
@@ -249,27 +266,27 @@ class RecyclerAdapter(private val listenerActivity: MainActivity, private val ge
                 val charString = constraint?.toString() ?: ""
                 queryText = charString
                     val filteredList = ArrayList<RecyclerViewItems>()
-                    filteredItems.filterIsInstance<RecyclerViewItems.Layers>().filter {
+                items.filterIsInstance<RecyclerViewItems.Layers>().filter {
                                 (it.title.title.toString().lowercase()
-                                    .contains(constraint.toString().lowercase()!!)) or
-                                        (it.title.title.toString().lowercase()
-                                            .contains(constraint.toString().lowercase()))
+                                    .contains(constraint.toString().lowercase()))
                         }
                         .forEach { filteredList.add(it) }
-//                filteredItems = filteredList.toMutableList()
-                filteredItems = filteredList
-                Log.d("tagg","return")
-//                filteredItems.add(filteredItems.indexOf(filteredItems.filterIsInstance<RecyclerViewItems.Layers>().first { it.group == Group.RED}),items.first { it is RecyclerViewItems.LayersGroup})
-                return FilterResults().apply { values = if (charString.isEmpty()) items else   filteredItems}
+                Log.d("tagg","items bef bef ${filteredItems.map{it::class.simpleName}}")
+
+                filteredItems = items.filterIndexed { index, recyclerViewItems ->
+                     recyclerViewItems in filteredList || recyclerViewItems is RecyclerViewItems.LayersGroup
+                }.toMutableList()
+                if(filteredItems.last() is RecyclerViewItems.LayersGroup ) filteredItems.removeLast()
+                filteredItems = filteredItems.filter { it is RecyclerViewItems.Layers || filteredItems[filteredItems.indexOf(it)+1] !is RecyclerViewItems.LayersGroup}.toMutableList()
+                return FilterResults().apply { values = if (charString.isEmpty()) items else filteredItems}
             }
 
             @SuppressLint("NotifyDataSetChanged")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
                 Log.d("tagg","publish ${results?.values}")
-                filteredItems = if (results?.values == null)
-                    ArrayList()
-                else
-//                    results.values as MutableList<RecyclerViewItems>
+                filteredItems = if (results?.values == null){
+                        ArrayList()
+                } else
                     results.values as ArrayList<RecyclerViewItems>
                 notifyDataSetChanged()
             }
@@ -279,14 +296,17 @@ class RecyclerAdapter(private val listenerActivity: MainActivity, private val ge
     fun onItemMoved(fromPosition: Int, toPosition: Int): Boolean {
         if (fromPosition < toPosition) {
             for (i in fromPosition until toPosition) {
-                Collections.swap(items, i, i + 1)
+                Collections.swap(filteredItems, i, i + 1)
             }
         } else {
             for (i in fromPosition downTo toPosition + 1) {
-                Collections.swap(items, i, i - 1)
+                Collections.swap(filteredItems, i, i - 1)
             }
         }
         notifyItemMoved(fromPosition, toPosition)
+        notifyItemChanged(fromPosition, toPosition)
+
+        Log.d("tagg","moved ${filteredItems.filterIsInstance<RecyclerViewItems.Layers>().map{it.title.title.length}}")
         return true
     }
 

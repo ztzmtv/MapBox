@@ -12,6 +12,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/tabLayoutParent"
+        android:background="@color/dark_blue"
         >
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
@@ -48,6 +49,14 @@
 
         </com.google.android.material.tabs.TabLayout>
 
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/white30"
+            app:layout_constraintTop_toBottomOf="@id/tabLayout"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/expandableSearch"
             android:background="@color/dark_blue"
@@ -55,7 +64,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tabLayout"
+            app:layout_constraintTop_toBottomOf="@id/line"
             android:visibility="gone">
 
             <com.google.android.material.textfield.TextInputLayout
@@ -79,6 +88,7 @@
                     android:textColor="@color/white" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
