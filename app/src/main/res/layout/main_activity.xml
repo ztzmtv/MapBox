@@ -118,22 +118,16 @@
         app:layout_constraintTop_toBottomOf="@+id/tabLayoutParent">
 
 
-        <ScrollView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="wrap_content"
+            android:background="@color/dark_blue"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/dark_blue">
-
-            </androidx.recyclerview.widget.RecyclerView>
-        </ScrollView>
+        </androidx.recyclerview.widget.RecyclerView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -156,7 +150,7 @@
             android:paddingHorizontal="25dp"
             android:paddingVertical="14dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/commonSwitch"
+            app:layout_constraintEnd_toStartOf="@+id/commonSwitchParent"
             app:layout_constraintTop_toTopOf="parent"
             android:background="@color/button_background_color"
             app:tint="@color/button_text_color"
@@ -198,26 +192,36 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/add" />
 
-        <com.rm.rmswitch.RMTristateSwitch
-            android:id="@+id/commonSwitch"
-            android:layout_width="40dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="15dp"
+
+
+        <FrameLayout
+            android:id="@+id/commonSwitchParent"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingEnd="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-
-            app:forceAspectRatio="false"
-            app:state="left"
-            app:enabled="true"
-            app:switchDesign="android"
-            app:switchBkgLeftColor="@color/switch_track"
-            app:switchBkgMiddleColor="@color/switch_track"
-            app:switchBkgRightColor="@color/switch_track"
-
-            app:switchToggleLeftColor="@color/white_thumb"
-            app:switchToggleMiddleColor="@color/white60"
-            app:switchToggleRightColor="@color/green" />
+            >
+            <com.rm.rmswitch.RMTristateSwitch
+                android:id="@+id/commonSwitch"
+                android:duplicateParentState="true"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_gravity="center"
+                app:forceAspectRatio="false"
+                app:state="left"
+                app:enabled="true"
+                app:switchDesign="android"
+                app:switchBkgLeftColor="@color/white38"
+                app:switchBkgMiddleColor="@color/white38"
+                app:switchBkgRightColor="@color/green50"
+                app:switchToggleLeftColor="@color/white_thumb"
+                app:switchToggleMiddleColor="@color/white60"
+                app:switchToggleRightColor="@color/green" />
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

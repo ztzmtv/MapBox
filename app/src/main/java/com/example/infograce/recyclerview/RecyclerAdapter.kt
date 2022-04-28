@@ -8,6 +8,7 @@ import android.text.Spannable
 import android.text.style.BackgroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
@@ -31,8 +32,7 @@ class RecyclerAdapter(private val listenerActivity: MainActivity, private val ge
 
     var items: MutableList<RecyclerViewItems> = ArrayList()
     var filteredItems: MutableList<RecyclerViewItems> = ArrayList()
-    var filteredItems2: MutableList<RecyclerViewItems> = ArrayList()
-
+//    var isSearchable: Boolean = false
     var isDraggable: Boolean = false
     var isVisible: Boolean = false
     var queryText=""
@@ -61,8 +61,8 @@ class RecyclerAdapter(private val listenerActivity: MainActivity, private val ge
                     listenerActivity
                 )
                 if (filteredItems[position] == filteredItems[0])
-                    holder.binding.line.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                        setMargins(0, 0, 0, 0)
+                    holder.binding.textViewTitle.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                        setMargins(0, 50, 0, 0)
                     }
 //                holder.bind(
 //                    items[position] as RecyclerViewItems.LayersGroup,
@@ -123,26 +123,66 @@ class RecyclerAdapter(private val listenerActivity: MainActivity, private val ge
                     holder.binding.dragView.visibility =
                         if (isDraggable) View.VISIBLE else View.GONE
 
+
+//                    if (holder.binding.titleView.lineCount > 2) holder.binding.titleView.te
+                    holder.binding.switch2.setOnClickListener {
+                        listenerActivity.onSwitched()
+                        currentItem.switchSave = holder.binding.switch2.isChecked
+                        Log.d("taggs","${filteredItems.filterIsInstance<RecyclerViewItems.Layers>().map{it.switchSave}}")
+
+                    }
+                    holder.binding.switch2.setOnCheckedChangeListener { buttonView, isChecked ->
+                        currentItem.switch = isChecked
+                    }
+
+                    holder.binding.dragView.setOnTouchListener { _, event ->
+                        if (event.action == MotionEvent.ACTION_DOWN) {
+                            gestureCallbacks.onStartDrag(holder)
+                        }
+                        false
+                    }
+
+
+
                     holder.binding.switch2.isChecked = currentItem.switch
 
+
                     holder.binding.titleLine.setOnClickListener {
-                        if(currentItem.visibility){
-                            currentItem.visibility = false
-                        }else{
-                            closeLayers()
-                            currentItem.visibility = true
+                        if (!isDraggable) {
+                            if (currentItem.visibility) {
+                                currentItem.visibility = false
+                            } else {
+                                if (currentItem == filteredItems.last()) {
+                                    listenerActivity.onScroll()
+                                    Log.d("taggg", "${filteredItems.last()}")
+                                }
+                                closeLayers()
+                                currentItem.visibility = true
+                            }
+                            notifyItemChanged(position)
                         }
-                        notifyItemChanged(position)
                     }
 
                     holder.binding.titleLine.setOnLongClickListener() {
                         currentItem.enable = !currentItem.enable
                         notifyItemChanged(position)
+//                        if (filteredItems[position] == filteredItems.last()) {
+//                            listenerActivity.onScroll()
+//                        }
                         true
                     }
 
                     holder.binding.slider.addOnChangeListener { slider, value, fromUser ->
-                        holder.binding.transView.setText("Прозрачность: ${value.toInt()}%")
+                        holder.binding.transViewNum.setText("${value.toInt()}%")
+                    }
+                    if (filteredItems[position] == filteredItems.last())
+                        holder.binding.expandable.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                            setMargins(0, 0, 0, 50)
+                        }
+                    else{
+                        holder.binding.expandable.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                            setMargins(0, 0, 0, 0)
+                        }
                     }
 
 //                    holder.binding.dragView.setOnTouchListener { v, event ->
@@ -195,22 +235,22 @@ class RecyclerAdapter(private val listenerActivity: MainActivity, private val ge
         }
 
     fun switchedOffAll(){
-        items.filterIsInstance<RecyclerViewItems.Layers>().map { it.switch = false }
+        filteredItems.filterIsInstance<RecyclerViewItems.Layers>().map { it.switch = false }
     }
     fun switchedOnAll(){
-        items.filterIsInstance<RecyclerViewItems.Layers>().map { it.switch = true }
+        filteredItems.filterIsInstance<RecyclerViewItems.Layers>().map { it.switch = true }
     }
     fun switchedMidAll(){
-        items.filterIsInstance<RecyclerViewItems.Layers>().map { it.switch = it.switchSave }
+        filteredItems.filterIsInstance<RecyclerViewItems.Layers>().map { it.switch = it.switchSave }
     }
     fun resetSwitchSaveAll(){
-        items.filterIsInstance<RecyclerViewItems.Layers>().map { it.switchSave = false }
+        filteredItems.filterIsInstance<RecyclerViewItems.Layers>().map { it.switchSave = false }
     }
     fun switchSaveToSwitch(){
-        items.filterIsInstance<RecyclerViewItems.Layers>().map { it.switchSave = it.switch}
+        filteredItems.filterIsInstance<RecyclerViewItems.Layers>().map { it.switchSave = it.switch}
     }
 
-    private fun closeLayers() {
+    fun closeLayers() {
         filteredItems.mapIndexed { index, t ->
             if(t is RecyclerViewItems.Layers && t.visibility) {
                 t.visibility = false
@@ -219,20 +259,22 @@ class RecyclerAdapter(private val listenerActivity: MainActivity, private val ge
         }
     }
 
-    fun setChanged() {
-        filteredItems.mapIndexed { index, t ->
-                notifyItemChanged(index)
-        }
-    }
+//    fun setChanged() {
+//        filteredItems.mapIndexed { index, t ->
+//                notifyItemChanged(index)
+//        }
+//    }
 
-        fun addLayer() {
-            items.add(DataSource.addLayer[0])
-            notifyItemChanged(items.size)
+        fun addLayer(layer: RecyclerViewItems.Layers) {
+            filteredItems.add(layer)
+            notifyItemChanged(itemCount)
+//            Log.d("taggg","${filteredItems.map{it::class.simpleName}}")
+
         }
 
         fun removeLayer() {
-            items.removeLast()
-            notifyItemChanged(items.size)
+            filteredItems.removeLast()
+            notifyItemChanged(itemCount)
         }
 
 //        val touchHelper =
@@ -258,6 +300,7 @@ class RecyclerAdapter(private val listenerActivity: MainActivity, private val ge
 
         interface Listener {
             fun onSwitched()
+            fun onScroll()
         }
 
     override fun getFilter(): Filter {

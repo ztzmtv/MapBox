@@ -45,11 +45,11 @@
             app:layout_constraintStart_toEndOf="@id/iconView"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <ImageView
             android:id="@+id/chevron"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
             android:padding="15dp"
             app:layout_constraintBottom_toBottomOf="@+id/iconView"
             app:layout_constraintEnd_toStartOf="@id/switch2"
@@ -97,11 +97,12 @@
         android:id="@+id/expandable"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:thumbColor='@color/green'
         android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleLine"
+        app:thumbColor='@color/green'
         tools:context=".ui.main.MainFragment">
 
         <View
@@ -116,13 +117,13 @@
             android:id="@+id/expandable_body"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/layout_bg"
             android:layout_marginStart="16dp"
-            app:thumbColor='@color/green'
+            android:background="@drawable/layout_bg"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/line"
+            app:thumbColor='@color/green'
             tools:context=".ui.main.MainFragment">
 
             <TextView
@@ -131,22 +132,46 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="58dp"
                 android:layout_marginTop="13dp"
-                android:text="@string/app_name"
+                android:text="@string/transparency"
                 android:textColor="@color/white60"
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/syncView"
+                android:id="@+id/transViewNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="13dp"
+                android:text="@string/app_name"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/transView"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/elemViewNum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp"
                 android:layout_marginEnd="22dp"
-                android:textSize="12sp"
                 android:text="@string/app_name"
-                android:textColor="@color/white60"
+                android:textColor="@color/white"
+                android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/elemView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:layout_marginEnd="2dp"
+                android:text="@string/elements"
+                android:textColor="@color/white60"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@+id/elemViewNum"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.slider.Slider
@@ -160,19 +185,23 @@
                 android:value="60.0"
                 android:valueFrom="0.0"
                 android:valueTo="100.0"
-                app:trackColorActive="@color/green"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/transView" />
-
+                app:layout_constraintTop_toBottomOf="@+id/transView"
+                app:trackColorActive="@color/green" />
 
 
             <ImageView
                 android:id="@+id/zoomView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
+                android:layout_marginStart="-12dp"
+                android:layout_marginBottom="5dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="7dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/transView"
                 app:srcCompat="@drawable/zoom_to_fit_icon" />
@@ -182,7 +211,11 @@
                 android:id="@+id/tableView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="10dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="7dp"
                 app:layout_constraintBottom_toBottomOf="@+id/zoomView"
                 app:layout_constraintStart_toEndOf="@+id/zoomView"
                 app:layout_constraintTop_toTopOf="@+id/zoomView"
@@ -192,7 +225,11 @@
                 android:id="@+id/centerView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="10dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="7dp"
                 app:layout_constraintBottom_toBottomOf="@+id/zoomView"
                 app:layout_constraintStart_toEndOf="@+id/tableView"
                 app:layout_constraintTop_toTopOf="@+id/zoomView"
@@ -202,14 +239,28 @@
                 android:id="@+id/rectangleView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="-1dp"
+                android:layout_marginEnd="22dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 app:layout_constraintBottom_toBottomOf="@+id/zoomView"
-                app:layout_constraintEnd_toEndOf="@+id/syncView"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/zoomView"
                 app:srcCompat="@drawable/rectangle_283" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/zoomViewNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/rectangleView"
+                app:layout_constraintEnd_toEndOf="@+id/rectangleView"
+                app:layout_constraintStart_toStartOf="@+id/rectangleView"
+                app:layout_constraintTop_toTopOf="@+id/rectangleView" />
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

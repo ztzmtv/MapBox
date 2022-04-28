@@ -13,6 +13,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.infograce.dataClass.AddLayer
 import com.example.infograce.dataClass.DataSource
 import com.example.infograce.dataClass.RecyclerViewItems
 import com.example.infograce.databinding.LayerGroupBinding
@@ -48,24 +49,40 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter
 
-        addDataSet("")
+        addDataSet()
 
         binding.imageAdd.setOnClickListener{
-            adapter.addLayer()
+            addLayer()
         }
         binding.imageDelete.setOnClickListener {
             adapter.removeLayer()
         }
 
+
+
+
+
+
+        binding.commonSwitchParent.setOnClickListener {
+            binding.commonSwitch.performClick()
+        }
+
+
+
+
+
         binding.imageDrag.setOnClickListener {
             dragState =! dragState
             binding.imageDrag.isSelected = dragState
             adapter.isDraggable =! adapter.isDraggable
-            if(dragState) itemTouchHelper.attachToRecyclerView(binding.recyclerView) else itemTouchHelper.attachToRecyclerView(null)
-            binding.commonSwitch.visibility = if(dragState) View.GONE else View.VISIBLE
-            adapter.notifyDataSetChanged()
-//            Log.d("taggg","\n ${adapter.items.size} ${adapter.items.map{it::class.simpleName}}\n${adapter.filteredItems.size} ${adapter.filteredItems.map{it::class.simpleName}}")
+            if(dragState) {
+                itemTouchHelper.attachToRecyclerView(binding.recyclerView)
 
+            }else itemTouchHelper.attachToRecyclerView(null)
+            binding.commonSwitchParent.visibility = if(dragState) View.GONE else View.VISIBLE
+//            binding.commonSwitch.visibility = if(dragState) View.GONE else View.VISIBLE
+            adapter.notifyDataSetChanged()
+            adapter.closeLayers()
         }
 
         fun switchFun(switchView: RMTristateSwitch, isSwitchedAny1: Boolean, isSwitchedAll1: Boolean){
@@ -103,11 +120,13 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
             val imm =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
-
         }
 
         binding.imageSearch.setOnClickListener {
+            adapter.closeLayers()
             searchState =! searchState
+//            adapter.isSearchable =! adapter.isSearchable
+//            adapter.notifyItemChanged(0)
             if(!searchState){
                 lastInput = binding.editSearch.text.toString()
                 binding.editSearch.text?.clear()
@@ -120,6 +139,9 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
             }
             binding.imageSearch.isSelected = searchState
             binding.expandableSearch.visibility = if(binding.expandableSearch.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+//            binding.recyclerView.postDelayed({
+                binding.recyclerView.scrollToPosition(0)
+//            },50)
         }
 
         binding.editSearch.addTextChangedListener(object : TextWatcher {
@@ -131,13 +153,19 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
             override fun afterTextChanged(s: Editable?) {
             }
         })
-
     }
 
-    private fun addDataSet(search: String){
-        val data = DataSource.createDataSet(search)
+    private fun addDataSet(){
+        val data = DataSource.createDataSet()
         adapter.submitList(data)
     }
+
+    private fun addLayer(){
+        val layer = AddLayer.createLayer()
+        adapter.addLayer(layer)
+    }
+
+
 
     override fun onSwitched() {
         indirectSwitched = true
@@ -159,6 +187,12 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
             binding.commonSwitch.state = RMTristateSwitch.STATE_LEFT
         }
         indirectSwitched = false
+
+    }
+
+    override fun onScroll(){
+        Log.d("taggg","scroll")
+        binding.recyclerView.scrollToPosition(adapter.itemCount - 1)
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
@@ -179,5 +213,7 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
     override fun onItemMoved(fromPosition: Int, toPosition: Int): Boolean {
         return adapter.onItemMoved(fromPosition, toPosition)
     }
+
+
 
 }

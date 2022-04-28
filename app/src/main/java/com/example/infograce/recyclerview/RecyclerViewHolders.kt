@@ -1,6 +1,7 @@
 package com.example.infograce.recyclerview
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -19,9 +20,7 @@ sealed class RecyclerViewHolders(binding: ViewBinding, listenerActivity: MainAct
     class LayersGroupViewHolder(val binding: LayersGroupBinding,private val listenerActivity: MainActivity): RecyclerViewHolders(binding, listenerActivity){
         fun bind(title: RecyclerViewItems.LayersGroup, listenerActivity: MainActivity)= with(binding){
             textViewTitle.text = title.titleGroup
-
-
-
+            textViewSync.text = title.sync
         }
     }
 
@@ -35,26 +34,13 @@ sealed class RecyclerViewHolders(binding: ViewBinding, listenerActivity: MainAct
         fun bind(layer: RecyclerViewItems.Layers, listenerActivity: MainActivity, gestureCallbacks: GestureCallbacks) = with(binding){
             itemLayer = layer
             titleView.text = layer.title.title
-            transView.text = layer.trans
-            syncView.text = layer.sync
-//            elemView.text = layer.elem
-//            zoomView.text = layer.zoom
+            transViewNum.text = layer.trans
+            elemViewNum.text = layer.elem.toString()
+            zoomViewNum.text = layer.zoom
             iconView.setImageResource(layer.icon)
 
-            switch2.setOnClickListener {
-                listenerActivity.onSwitched()
-                layer.switchSave = switch2.isChecked
-            }
-            switch2.setOnCheckedChangeListener { buttonView, isChecked ->
-                layer.switch = isChecked
-            }
 
-            binding.dragView.setOnTouchListener { _, event ->
-                if (event.action == MotionEvent.ACTION_DOWN) {
-                    gestureCallbacks.onStartDrag(this@LayersViewHolder)
-                }
-                false
-            }
+
         }
     }
 

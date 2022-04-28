@@ -15,8 +15,7 @@ sealed class RecyclerViewItems {
         val icon: Int,
         val title: TitleSpannable,
         val trans : String,
-        val sync: String,
-        val elem: String,
+        val elem: Int,
         val zoom: String,
         val group: Group,
         var visibility: Boolean = false,
@@ -34,6 +33,7 @@ sealed class RecyclerViewItems {
 
     data class LayersGroup(
         val titleGroup: String,
+        val sync: String,
         val group: Group
     ):RecyclerViewItems()
 

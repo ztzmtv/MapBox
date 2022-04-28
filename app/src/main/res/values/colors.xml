@@ -14,6 +14,8 @@
     <color name="dark_blue">#252D45</color>
     <color name="dark_blue_exp">#4D566F</color>
     <color name="green">#59BD87</color>
+    <color name="green50">#8059BD87</color>
+
     <color name="mtrl_textinput_default_box_stroke_color" override="true">#fff</color>
 
 
