@@ -6,4 +6,17 @@
     <string name="titleGroup">Общие слои</string>
     <string name="transparency">Прозрачность:</string>
     <string name="elements">Эл-ов:</string>
+    <string name="commonDrag">commonDrag</string>
+    <string name="deleteLayer">deleteLayer</string>
+    <string name="search">search</string>
+    <string name="addLayer">addLayer</string>
+    <string name="imageReload">imageReload</string>
+    <string name="iconLayer">iconLayer</string>
+    <string name="chevron">chevron</string>
+    <string name="invisible">invisible</string>
+    <string name="drag">drag</string>
+    <string name="zoom">zoom</string>
+    <string name="center">center</string>
+    <string name="table">table</string>
+    <string name="rectangle">rectangle</string>
 </resources>

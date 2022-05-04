@@ -36,5 +36,4 @@ sealed class RecyclerViewItems {
         val sync: String,
         val group: Group
     ):RecyclerViewItems()
-
 }

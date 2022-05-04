@@ -5,25 +5,23 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.infograce.dataClass.AddLayer
 import com.example.infograce.dataClass.DataSource
 import com.example.infograce.dataClass.RecyclerViewItems
-import com.example.infograce.databinding.LayerGroupBinding
 import com.example.infograce.databinding.MainActivityBinding
 import com.example.infograce.recyclerview.GestureCallbacks
 import com.example.infograce.recyclerview.ItemTouchHelperCallback
 import com.example.infograce.recyclerview.RecyclerAdapter
 import com.rm.rmswitch.RMTristateSwitch
-import com.rm.rmswitch.RMTristateSwitch.RMTristateSwitchObserver
-
 
 class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.OnQueryTextListener,
     GestureCallbacks {
@@ -32,9 +30,10 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
     private lateinit var adapter: RecyclerAdapter
     private val itemTouchHelper = ItemTouchHelper(ItemTouchHelperCallback(this))
     private var indirectSwitched: Boolean = false
-    var searchState: Boolean = false
-    var dragState: Boolean = false
-    var lastInput: String = ""
+    private var searchState: Boolean = false
+    private var dragState: Boolean = false
+    private var lastInput: String = ""
+//    var scale = resources.displayMetrics.density
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,18 +57,9 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
             adapter.removeLayer()
         }
 
-
-
-
-
-
         binding.commonSwitchParent.setOnClickListener {
             binding.commonSwitch.performClick()
         }
-
-
-
-
 
         binding.imageDrag.setOnClickListener {
             dragState =! dragState
@@ -80,9 +70,21 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
 
             }else itemTouchHelper.attachToRecyclerView(null)
             binding.commonSwitchParent.visibility = if(dragState) View.GONE else View.VISIBLE
-//            binding.commonSwitch.visibility = if(dragState) View.GONE else View.VISIBLE
             adapter.notifyDataSetChanged()
             adapter.closeLayers()
+            val scale = resources.displayMetrics.density
+            if (dragState) {
+                it.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    marginEnd = 0
+                }
+                it.setPadding((20 * scale).toInt(), (14 * scale).toInt(), (20 * scale).toInt(), (14 * scale).toInt())
+            }
+            else{
+                it.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    marginEnd = (2*scale).toInt()
+                }
+                it.setPadding((12 * scale).toInt(), (14 * scale).toInt(), (12 * scale).toInt(), (14 * scale).toInt())
+            }
         }
 
         fun switchFun(switchView: RMTristateSwitch, isSwitchedAny1: Boolean, isSwitchedAll1: Boolean){
@@ -101,13 +103,13 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
             adapter.notifyDataSetChanged()
         }
 
-        binding.commonSwitch.addSwitchObserver(RMTristateSwitchObserver { switchView, state ->
+        binding.commonSwitch.addSwitchObserver { switchView, _ ->
             val isSwitchedAny1: Boolean = adapter.items.filterIsInstance<RecyclerViewItems.Layers>().any { it.switchSave }
             val isSwitchedAll1: Boolean = adapter.items.filterIsInstance<RecyclerViewItems.Layers>().all { it.switchSave }
             if (!indirectSwitched) {
                 switchFun(switchView, isSwitchedAny1, isSwitchedAll1)
             }
-        })
+        }
 
         fun showSoftKeyboard(view: View) {
             if (view.requestFocus()) {
@@ -125,8 +127,6 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
         binding.imageSearch.setOnClickListener {
             adapter.closeLayers()
             searchState =! searchState
-//            adapter.isSearchable =! adapter.isSearchable
-//            adapter.notifyItemChanged(0)
             if(!searchState){
                 lastInput = binding.editSearch.text.toString()
                 binding.editSearch.text?.clear()
@@ -139,9 +139,7 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
             }
             binding.imageSearch.isSelected = searchState
             binding.expandableSearch.visibility = if(binding.expandableSearch.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-//            binding.recyclerView.postDelayed({
                 binding.recyclerView.scrollToPosition(0)
-//            },50)
         }
 
         binding.editSearch.addTextChangedListener(object : TextWatcher {
@@ -175,6 +173,7 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
         when(binding.commonSwitch.state) {
             RMTristateSwitch.STATE_LEFT -> adapter.resetSwitchSaveAll()
             RMTristateSwitch.STATE_RIGHT -> adapter.switchSaveToSwitch()
+            RMTristateSwitch.STATE_MIDDLE -> {}
         }
 
         if (isSwitchedAll) {
@@ -191,7 +190,6 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
     }
 
     override fun onScroll(){
-        Log.d("taggg","scroll")
         binding.recyclerView.scrollToPosition(adapter.itemCount - 1)
     }
 
@@ -206,14 +204,10 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.Listener , SearchView.
     }
 
     override fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
-        Log.d("tagg","start")
         itemTouchHelper.startDrag(viewHolder)
     }
 
     override fun onItemMoved(fromPosition: Int, toPosition: Int): Boolean {
         return adapter.onItemMoved(fromPosition, toPosition)
     }
-
-
-
 }

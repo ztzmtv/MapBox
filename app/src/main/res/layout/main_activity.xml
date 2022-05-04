@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -146,15 +145,16 @@
             android:id="@+id/imageDrag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="0dp"
-            android:paddingHorizontal="25dp"
+            android:paddingHorizontal="12dp"
             android:paddingVertical="14dp"
+            android:layout_marginEnd="2dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/commonSwitchParent"
             app:layout_constraintTop_toTopOf="parent"
             android:background="@color/button_background_color"
             app:tint="@color/button_text_color"
-            app:srcCompat="@drawable/drag_list_item" />
+            app:srcCompat="@drawable/drag_list_item"
+            android:contentDescription="@string/commonDrag" />
 
         <ImageView
             android:id="@+id/imageDelete"
@@ -166,7 +166,8 @@
             app:layout_constraintStart_toEndOf="@+id/imageSearch"
             app:layout_constraintTop_toTopOf="@+id/imageSearch"
             android:background="@color/button_background_color"
-            app:srcCompat="@drawable/delete" />
+            app:srcCompat="@drawable/delete"
+            android:contentDescription="@string/deleteLayer"/>
 
         <ImageView
             android:id="@+id/imageSearch"
@@ -178,7 +179,8 @@
             app:layout_constraintStart_toEndOf="@+id/imageAdd"
             app:layout_constraintTop_toTopOf="@+id/imageAdd"
             android:background="@color/button_background_color"
-            app:srcCompat="@drawable/search" />
+            app:srcCompat="@drawable/search"
+            android:contentDescription="@string/search"/>
 
         <ImageView
             android:id="@+id/imageAdd"
@@ -190,7 +192,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/add" />
+            app:srcCompat="@drawable/add"
+            android:contentDescription="@string/addLayer"/>
 
 
 
@@ -198,7 +201,8 @@
             android:id="@+id/commonSwitchParent"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:paddingEnd="15dp"
+            android:paddingEnd="13dp"
+            android:paddingStart="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

@@ -5,7 +5,7 @@ import com.example.infograce.R
 class DataSource {
     companion object{
         fun createDataSet():ArrayList<RecyclerViewItems> {
-            var list = ArrayList<RecyclerViewItems>()
+            val list = ArrayList<RecyclerViewItems>()
             list.add(
                 RecyclerViewItems.LayersGroup(
                     "Последние слои",
@@ -19,7 +19,7 @@ class DataSource {
                     RecyclerViewItems.TitleSpannable("Слой делян"),
                     "60%",
                     241,
-                    "16-18",
+                    "16 - 18",
                     Group.BLUE
                 )
             )

@@ -21,13 +21,15 @@
             android:id="@+id/iconView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="22dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
+            android:contentDescription="@string/iconLayer"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/waypoint" />
+            app:srcCompat="@drawable/waypoint"
+            />
 
         <TextView
             android:id="@+id/titleView"
@@ -41,7 +43,7 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/invisView"
+            app:layout_constraintEnd_toStartOf="@+id/invisibleView"
             app:layout_constraintStart_toEndOf="@id/iconView"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -51,6 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="15dp"
+            android:contentDescription="@string/chevron"
             app:layout_constraintBottom_toBottomOf="@+id/iconView"
             app:layout_constraintEnd_toStartOf="@id/switch2"
             app:layout_constraintTop_toTopOf="@+id/iconView"
@@ -60,7 +63,7 @@
             android:id="@+id/switch2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
+            android:layout_marginEnd="10dp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/iconView"
             app:layout_constraintEnd_toEndOf="parent"
@@ -69,11 +72,12 @@
             />
 
         <ImageView
-            android:id="@+id/invisView"
+            android:id="@+id/invisibleView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
             android:visibility="gone"
+            android:contentDescription="@string/invisible"
             app:layout_constraintBottom_toBottomOf="@+id/chevron"
             app:layout_constraintEnd_toStartOf="@+id/chevron"
             app:layout_constraintTop_toTopOf="@+id/chevron"
@@ -84,8 +88,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="invisible"
-            android:layout_marginEnd="15dp"
+            android:layout_marginEnd="10dp"
             android:padding="10dp"
+            android:contentDescription="@string/drag"
             app:layout_constraintBottom_toBottomOf="@+id/switch2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/switch2"
@@ -130,7 +135,7 @@
                 android:id="@+id/transView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="58dp"
+                android:layout_marginStart="52dp"
                 android:layout_marginTop="13dp"
                 android:text="@string/transparency"
                 android:textColor="@color/white60"
@@ -174,23 +179,25 @@
                 app:layout_constraintEnd_toStartOf="@+id/elemViewNum"
                 app:layout_constraintTop_toTopOf="parent" />
 
+
             <com.google.android.material.slider.Slider
                 android:id="@+id/slider"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="44dp"
+                android:layout_marginStart="38dp"
                 android:layout_marginTop="-10dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="37dp"
-                android:value="60.0"
+                android:value="100.0"
                 android:valueFrom="0.0"
                 android:valueTo="100.0"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/transView"
+                app:layout_constraintVertical_bias="0.0"
                 app:trackColorActive="@color/green" />
-
 
             <ImageView
                 android:id="@+id/zoomView"
@@ -202,24 +209,11 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:padding="7dp"
+                android:contentDescription="@string/zoom"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/transView"
                 app:srcCompat="@drawable/zoom_to_fit_icon" />
 
-
-            <ImageView
-                android:id="@+id/tableView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:padding="7dp"
-                app:layout_constraintBottom_toBottomOf="@+id/zoomView"
-                app:layout_constraintStart_toEndOf="@+id/zoomView"
-                app:layout_constraintTop_toTopOf="@+id/zoomView"
-                app:srcCompat="@drawable/center_to_gps" />
 
             <ImageView
                 android:id="@+id/centerView"
@@ -230,8 +224,24 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:padding="7dp"
+                android:contentDescription="@string/center"
                 app:layout_constraintBottom_toBottomOf="@+id/zoomView"
-                app:layout_constraintStart_toEndOf="@+id/tableView"
+                app:layout_constraintStart_toEndOf="@+id/zoomView"
+                app:layout_constraintTop_toTopOf="@+id/zoomView"
+                app:srcCompat="@drawable/center_to_gps" />
+
+            <ImageView
+                android:id="@+id/tableView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="7dp"
+                android:contentDescription="@string/table"
+                app:layout_constraintBottom_toBottomOf="@+id/zoomView"
+                app:layout_constraintStart_toEndOf="@+id/centerView"
                 app:layout_constraintTop_toTopOf="@+id/zoomView"
                 app:srcCompat="@drawable/table_view_2" />
 
@@ -243,6 +253,8 @@
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
+                android:padding="11dp"
+                android:contentDescription="@string/rectangle"
                 app:layout_constraintBottom_toBottomOf="@+id/zoomView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/zoomView"

@@ -24,18 +24,37 @@
         <entry key="..\:/AndStu/Infograce/app/src/main/res/layout/main_fragment.xml" value="0.13333333333333333" />
         <entry key="..\:/AndStu/Infograce/app/src/main/res/layout/sec_fragment.xml" value="0.24682971014492755" />
         <entry key="..\:/AndStu/Infograce/app/src/main/res/menu/menu.xml" value="0.14375" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2015" />
+        <entry key="app/src/main/res/drawable/add.xml" value="0.2015" />
         <entry key="app/src/main/res/drawable/base_ripple.xml" value="0.2015" />
         <entry key="app/src/main/res/drawable/center_to_gps.xml" value="0.2015" />
         <entry key="app/src/main/res/drawable/chevron_reverse.xml" value="0.2015" />
         <entry key="app/src/main/res/drawable/chevron_right.xml" value="0.2015" />
+        <entry key="app/src/main/res/drawable/delete.xml" value="0.2015" />
         <entry key="app/src/main/res/drawable/drag_list_item.xml" value="0.2015" />
+        <entry key="app/src/main/res/drawable/folder.xml" value="0.2015" />
         <entry key="app/src/main/res/drawable/grometry_collection.xml" value="0.2015" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2015" />
+        <entry key="app/src/main/res/drawable/invisible.xml" value="0.2015" />
         <entry key="app/src/main/res/drawable/layout_bg.xml" value="0.2015" />
+        <entry key="app/src/main/res/drawable/line.xml" value="0.2015" />
+        <entry key="app/src/main/res/drawable/note.xml" value="0.2015" />
+        <entry key="app/src/main/res/drawable/polygon.xml" value="0.2015" />
+        <entry key="app/src/main/res/drawable/polygon_hatched_2.xml" value="0.2015" />
+        <entry key="app/src/main/res/drawable/rectangle_283.xml" value="0.2015" />
+        <entry key="app/src/main/res/drawable/region_border_dash_view.xml" value="0.2015" />
         <entry key="app/src/main/res/drawable/ripple.xml" value="0.2975" />
+        <entry key="app/src/main/res/drawable/search.xml" value="0.2015" />
+        <entry key="app/src/main/res/drawable/search2.xml" value="0.2015" />
+        <entry key="app/src/main/res/drawable/table_view_2.xml" value="0.2015" />
         <entry key="app/src/main/res/drawable/waypoint.xml" value="0.2015" />
-        <entry key="app/src/main/res/layout/layer_group.xml" value="0.6514522821576764" />
+        <entry key="app/src/main/res/drawable/zoom_to_fit_icon.xml" value="0.2015" />
+        <entry key="app/src/main/res/font/font.xml" value="0.22395833333333334" />
+        <entry key="app/src/main/res/layout/layer_group.xml" value="0.6811955168119551" />
         <entry key="app/src/main/res/layout/layers_group.xml" value="0.5" />
         <entry key="app/src/main/res/layout/main_activity.xml" value="0.4391727493917275" />
+        <entry key="app/src/main/res/layout/main_fragment.xml" value="0.19375" />
+        <entry key="app/src/main/res/layout/sec_fragment.xml" value="0.19375" />
       </map>
     </option>
   </component>

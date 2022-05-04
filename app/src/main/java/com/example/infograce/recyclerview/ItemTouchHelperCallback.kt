@@ -3,7 +3,6 @@ package com.example.infograce.recyclerview
 import android.graphics.Canvas
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.infograce.dataClass.RecyclerViewItems
 
 private const val NO_MOVEMENT = 0
 
@@ -60,7 +59,7 @@ class ItemTouchHelperCallback(
                     || (isDraggingDownward && nextViewHolder != null && !canDropOver(recyclerView, viewHolder, nextViewHolder))
 
         val newDy = if (isDraggingIntoUndraggableArea) {
-            0f  // Clamp
+            0f
         } else {
             dY
         }
