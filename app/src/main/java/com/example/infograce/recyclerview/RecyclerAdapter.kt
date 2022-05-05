@@ -15,7 +15,7 @@ import android.widget.Filterable
 import androidx.core.text.clearSpans
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
-import com.example.infograce.MainActivity
+import com.example.infograce.MainFragment
 import com.example.infograce.R
 import com.example.infograce.dataClass.RecyclerViewItems
 import com.example.infograce.databinding.LayerGroupBinding
@@ -24,7 +24,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class RecyclerAdapter(private val listenerActivity: MainActivity, private val gestureCallbacks: GestureCallbacks): RecyclerView.Adapter<RecyclerViewHolders>(), Filterable{
+class RecyclerAdapter(private val listenerActivity: MainFragment, private val gestureCallbacks: GestureCallbacks): RecyclerView.Adapter<RecyclerViewHolders>(), Filterable{
 
     var items: MutableList<RecyclerViewItems> = ArrayList()
     var filteredItems: MutableList<RecyclerViewItems> = ArrayList()
