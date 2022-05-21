@@ -22,4 +22,5 @@
     <string name="table">table</string>
     <string name="rectangle">rectangle</string>
 
+    <string name="mapbox_access_token">pk.eyJ1IjoiYXptZXRvdiIsImEiOiJjbDNmdjN0c3AwOHl1M2R0NW03d2MxYTA5In0.pc3Uq0typG33XTRCp1U-VQ</string>
 </resources>
