@@ -3,6 +3,8 @@
     <string name="nav1">Слои</string>
     <string name="nav2">Подложки</string>
     <string name="nav3">Миссии</string>
+    <string name="nav_open">Открыть</string>
+    <string name="nav_close">Закрыть</string>
     <string name="titleGroup">Общие слои</string>
     <string name="transparency">Прозрачность:</string>
     <string name="elements">Эл-ов:</string>

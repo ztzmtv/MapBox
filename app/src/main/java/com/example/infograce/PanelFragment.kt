@@ -25,7 +25,7 @@ import com.example.infograce.recyclerview.RecyclerAdapter
 import com.rm.rmswitch.RMTristateSwitch
 
 
-class MainFragment : Fragment(), RecyclerAdapter.Listener , SearchView.OnQueryTextListener,
+class PanelFragment : Fragment(), RecyclerAdapter.Listener , SearchView.OnQueryTextListener,
     GestureCallbacks {
 
     private lateinit var binding: FragmentMainBinding
