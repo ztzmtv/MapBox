@@ -11,9 +11,9 @@
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        mapbox:mapbox_cameraTargetLat="40.7128"
-        mapbox:mapbox_cameraTargetLng="-74.0060"
-        mapbox:mapbox_cameraZoom="9.0" />
+        mapbox:mapbox_cameraTargetLat="55.7558"
+        mapbox:mapbox_cameraTargetLng="37.6173"
+        mapbox:mapbox_cameraZoom="14.0" />
 
     <com.google.android.material.navigation.NavigationView
 

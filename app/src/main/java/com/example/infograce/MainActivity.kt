@@ -1,10 +1,12 @@
 package com.example.infograce
 
+import android.graphics.Color.red
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import com.example.infograce.databinding.MainActivityBinding
 import com.example.infograce.helper.LocationPermissionHelper
 import com.mapbox.android.gestures.MoveGestureDetector
@@ -12,6 +14,9 @@ import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
 import com.mapbox.maps.Style
 import com.mapbox.maps.extension.style.expressions.dsl.generated.interpolate
+import com.mapbox.maps.extension.style.layers.generated.fillLayer
+import com.mapbox.maps.extension.style.sources.generated.vectorSource
+import com.mapbox.maps.extension.style.style
 import com.mapbox.maps.plugin.LocationPuck2D
 import com.mapbox.maps.plugin.gestures.OnMoveListener
 import com.mapbox.maps.plugin.gestures.gestures
@@ -29,11 +34,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = MainActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        mapView = binding.mapView
-        mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS)
-
-        enableLocation()
         setupDrawerLayout()
+        mapView = binding.mapView
+        enableLocation()
+
+        mapView.getMapboxMap().loadStyle(
+            style
+                (styleUri = Style.SATELLITE) {
+                +vectorSource("1e6rib3l") {
+                    url("mapbox://azmetov.1e6rib3l")
+                }
+                +fillLayer("METEO","1e6rib3l"){
+                    sourceLayer("METEO")
+                    fillColor(ContextCompat.getColor(this@MainActivity, R.color.dark_blue))
+                    fillOpacity(0.5)
+                    fillOutlineColor(ContextCompat.getColor(this@MainActivity, R.color.purple_200))
+
+                }
+            }
+        )
     }
 
     private fun enableLocation() {
