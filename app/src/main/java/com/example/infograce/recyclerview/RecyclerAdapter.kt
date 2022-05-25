@@ -15,22 +15,26 @@ import android.widget.Filterable
 import androidx.core.text.clearSpans
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
-import com.example.infograce.PanelFragment
+import com.example.infograce.MainFragment
 import com.example.infograce.R
 import com.example.infograce.dataClass.RecyclerViewItems
 import com.example.infograce.databinding.LayerGroupBinding
 import com.example.infograce.databinding.LayersGroupBinding
 import java.util.*
-import kotlin.collections.ArrayList
 
 
-class RecyclerAdapter(private val listenerActivity: PanelFragment, private val gestureCallbacks: GestureCallbacks): RecyclerView.Adapter<RecyclerViewHolders>(), Filterable{
+class RecyclerAdapter(
+    private val listenerActivity: MainFragment,
+    private val gestureCallbacks: GestureCallbacks
+): RecyclerView.Adapter<RecyclerViewHolders>(), Filterable{
 
     var items: MutableList<RecyclerViewItems> = ArrayList()
     var filteredItems: MutableList<RecyclerViewItems> = ArrayList()
     var isDraggable: Boolean = false
     private var isVisible: Boolean = false
     var queryText=""
+
+    val itemChangeListener: ((RecyclerViewItems, Float) -> Unit) ?= null
 
     private val spanHighlight by lazy {
         BackgroundColorSpan(
@@ -142,6 +146,7 @@ class RecyclerAdapter(private val listenerActivity: PanelFragment, private val g
 
                     holder.binding.slider.addOnChangeListener { _, value, _ ->
                         holder.binding.transViewNum.text = "${value.toInt()}%"
+                        itemChangeListener?.invoke(currentItem, value)
                     }
                     if (filteredItems[position] == filteredItems.last())
                         holder.binding.expandable.updateLayoutParams<ViewGroup.MarginLayoutParams> {
