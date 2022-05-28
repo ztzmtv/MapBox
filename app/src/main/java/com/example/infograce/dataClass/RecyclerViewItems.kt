@@ -2,7 +2,7 @@ package com.example.infograce.dataClass
 
 import android.text.Spannable
 import android.text.SpannableString
-import com.example.infograce.mapStyleModels.TilesetLayer
+import com.example.infograce.dataClass.models.Layer
 
 enum class Group {
     RED,
@@ -24,7 +24,7 @@ sealed class RecyclerViewItems {
         var draggable: Boolean = false,
         var switch: Boolean = false,
         var switchSave: Boolean = false,
-        val data: TilesetLayer ?= null,
+        val data: Layer,
     ):RecyclerViewItems()
 
     data class TitleSpannable (

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -29,12 +31,18 @@ import com.example.infograce.recyclerview.GestureCallbacks
 import com.example.infograce.recyclerview.ItemTouchHelperCallback
 import com.example.infograce.recyclerview.RecyclerAdapter
 import com.mapbox.android.gestures.MoveGestureDetector
-import com.mapbox.maps.CameraOptions
-import com.mapbox.maps.MapView
-import com.mapbox.maps.Style
+import com.mapbox.maps.*
+import com.mapbox.maps.extension.style.StyleContract
 import com.mapbox.maps.extension.style.expressions.dsl.generated.interpolate
+import com.mapbox.maps.extension.style.layers.addLayer
+import com.mapbox.maps.extension.style.layers.generated.FillLayer
 import com.mapbox.maps.extension.style.layers.generated.fillLayer
+import com.mapbox.maps.extension.style.layers.getLayer
+import com.mapbox.maps.extension.style.layers.getLayerAs
+import com.mapbox.maps.extension.style.layers.properties.generated.Visibility
+import com.mapbox.maps.extension.style.sources.addSource
 import com.mapbox.maps.extension.style.sources.generated.vectorSource
+import com.mapbox.maps.extension.style.sources.getSource
 import com.mapbox.maps.extension.style.style
 import com.mapbox.maps.plugin.LocationPuck2D
 import com.mapbox.maps.plugin.gestures.OnMoveListener
@@ -49,15 +57,17 @@ import java.lang.ref.WeakReference
 class MainFragment : Fragment(), RecyclerAdapter.Listener, SearchView.OnQueryTextListener,
     GestureCallbacks {
 
+    private val itemTouchHelper = ItemTouchHelper(ItemTouchHelperCallback(this))
+    private lateinit var locationPermissionHelper: LocationPermissionHelper
     private lateinit var binding: FragmentMainBinding
     private lateinit var adapter: RecyclerAdapter
-    private val itemTouchHelper = ItemTouchHelper(ItemTouchHelperCallback(this))
     private var indirectSwitched: Boolean = false
     private var searchState: Boolean = false
     private var dragState: Boolean = false
     private var lastInput: String = ""
     private lateinit var mapView: MapView
-    private lateinit var locationPermissionHelper: LocationPermissionHelper
+    private lateinit var mapboxMap: MapboxMap
+    private lateinit var styleExtension: StyleContract.StyleExtension
 
 
     override fun onCreateView(
@@ -76,103 +86,149 @@ class MainFragment : Fragment(), RecyclerAdapter.Listener, SearchView.OnQueryTex
     @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupDrawerLayout()
 
         mapView = binding.mapView
+        mapboxMap = mapView.getMapboxMap()
 
         enableLocation()
 
-        mapView.getMapboxMap().loadStyle(
-            style
-                (styleUri = Style.SATELLITE) {
-                +vectorSource("1e6rib3l") {
-                    url("mapbox://azmetov.1e6rib3l")
-                }
-                +fillLayer("METEO", "1e6rib3l") {
-                    sourceLayer("METEO")
-                    fillColor(ContextCompat.getColor(requireActivity(), R.color.dark_blue))
-                    fillOpacity(0.5)
-                    fillOutlineColor(ContextCompat.getColor(requireActivity(), R.color.purple_200))
-
+        with(adapter) {
+            itemCreateListener = { layer ->
+                mapboxMap.loadStyle(style(styleUri = Style.SATELLITE) {})
+                {
+                    if (it.getSource(layer.source.sourceId) == null)
+                        it.addSource(
+                            vectorSource(layer.source.sourceId) {
+                                url(layer.source.url)
+                            }
+                        )
+                    if (it.getLayer(layer.layerId) == null)
+                        it.addLayer(fillLayer(layer.layerId, layer.source.sourceId) {
+                            sourceLayer(layer.sourceLayer)
+                            //TODO( change color! )
+                            fillColor(ContextCompat.getColor(requireActivity(), R.color.dark_blue))
+                            fillOpacity(layer.fillOpacity)
+                            fillOutlineColor(
+                                ContextCompat.getColor(
+                                    requireActivity(),
+                                    R.color.purple_200
+                                )
+                            )
+                        })
                 }
             }
-        )
 
-        binding.imageAdd.setOnClickListener {
-            addLayer()
-        }
-        binding.imageDelete.setOnClickListener {
-            adapter.removeLayer()
-        }
-
-        binding.commonSwitchParent.setOnClickListener {
-            binding.commonSwitch.performClick()
-        }
-
-        binding.imageDrag.setOnClickListener {
-            dragState = !dragState
-            binding.imageDrag.isSelected = dragState
-            adapter.isDraggable = !adapter.isDraggable
-            if (dragState) {
-                itemTouchHelper.attachToRecyclerView(binding.recyclerView)
-
-            } else itemTouchHelper.attachToRecyclerView(null)
-            binding.commonSwitchParent.visibility = if (dragState) View.GONE else View.VISIBLE
-            adapter.notifyDataSetChanged()
-            adapter.closeLayers()
-            val scale = resources.displayMetrics.density
-            if (dragState) {
-                it.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                    marginEnd = 0
+            itemMoveListener = { fromId, toId ->
+                mapboxMap.getStyle {
+                    it.moveStyleLayer(fromId, LayerPosition(null, toId, null))
                 }
-                it.setPadding(
-                    (20 * scale).toInt(),
-                    (14 * scale).toInt(),
-                    (20 * scale).toInt(),
-                    (14 * scale).toInt()
-                )
-            } else {
-                it.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                    marginEnd = (2 * scale).toInt()
-                }
-                it.setPadding(
-                    (12 * scale).toInt(),
-                    (14 * scale).toInt(),
-                    (12 * scale).toInt(),
-                    (14 * scale).toInt()
-                )
             }
-        }
 
+            itemChangeListener = { layerId, value ->
+                mapboxMap.getStyle { style ->
+                    val layer = style.getLayerAs<FillLayer>(layerId)
+                    layer?.fillOpacity(value / 100.0)
+                }
+            }
 
-        fun switchFun(
-            switchView: RMTristateSwitch,
-            isSwitchedAny1: Boolean,
-            isSwitchedAll1: Boolean
-        ) {
-            when (switchView.state) {
-                RMTristateSwitch.STATE_LEFT -> adapter.switchedOffAll()
-                RMTristateSwitch.STATE_MIDDLE -> {
-                    if (isSwitchedAny1 && !isSwitchedAll1) {
-                        adapter.switchedMidAll()
-                    } else {
-                        switchView.state = RMTristateSwitch.STATE_RIGHT
-                        switchFun(switchView, isSwitchedAny1, !isSwitchedAll1)
+            itemVisibilityListener = { tilesetLayer, isChecked ->
+                mapboxMap.getStyle { style ->
+                    style.getLayer(tilesetLayer.layerId)?.let { layer ->
+                        if (isChecked) {
+                            layer.visibility(Visibility.VISIBLE)
+                        } else {
+                            layer.visibility(Visibility.NONE)
+                        }
                     }
                 }
-                RMTristateSwitch.STATE_RIGHT -> adapter.switchedOnAll()
             }
-            adapter.notifyDataSetChanged()
+
+            itemRemoveListener = { layerId ->
+                mapboxMap.getStyle { style ->
+                    if (style.styleLayerExists(layerId)) {
+                        style.removeStyleLayer(layerId)
+                    }
+                }
+            }
         }
 
-        binding.commonSwitch.addSwitchObserver { switchView, _ ->
-            val isSwitchedAny1: Boolean =
-                adapter.items.filterIsInstance<RecyclerViewItems.Layers>().any { it.switchSave }
-            val isSwitchedAll1: Boolean =
-                adapter.items.filterIsInstance<RecyclerViewItems.Layers>().all { it.switchSave }
-            if (!indirectSwitched) {
-                switchFun(switchView, isSwitchedAny1, isSwitchedAll1)
+        with(binding) {
+            imageAdd.setOnClickListener {
+                addLayer()
+            }
+            imageDelete.setOnClickListener {
+                adapter.removeLayer()
+            }
+
+            commonSwitchParent.setOnClickListener {
+                commonSwitch.performClick()
+            }
+
+            imageDrag.setOnClickListener {
+                dragState = !dragState
+                imageDrag.isSelected = dragState
+                adapter.isDraggable = !adapter.isDraggable
+                if (dragState) {
+                    itemTouchHelper.attachToRecyclerView(recyclerView)
+
+                } else itemTouchHelper.attachToRecyclerView(null)
+                commonSwitchParent.visibility = if (dragState) View.GONE else View.VISIBLE
+                adapter.notifyDataSetChanged()
+                adapter.closeLayers()
+                val scale = resources.displayMetrics.density
+                if (dragState) {
+                    it.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                        marginEnd = 0
+                    }
+                    it.setPadding(
+                        (20 * scale).toInt(),
+                        (14 * scale).toInt(),
+                        (20 * scale).toInt(),
+                        (14 * scale).toInt()
+                    )
+                } else {
+                    it.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                        marginEnd = (2 * scale).toInt()
+                    }
+                    it.setPadding(
+                        (12 * scale).toInt(),
+                        (14 * scale).toInt(),
+                        (12 * scale).toInt(),
+                        (14 * scale).toInt()
+                    )
+                }
+            }
+
+
+            fun switchFun(
+                switchView: RMTristateSwitch,
+                isSwitchedAny1: Boolean,
+                isSwitchedAll1: Boolean
+            ) {
+                when (switchView.state) {
+                    RMTristateSwitch.STATE_LEFT -> adapter.switchedOffAll()
+                    RMTristateSwitch.STATE_MIDDLE -> {
+                        if (isSwitchedAny1 && !isSwitchedAll1) {
+                            adapter.switchedMidAll()
+                        } else {
+                            switchView.state = RMTristateSwitch.STATE_RIGHT
+                            switchFun(switchView, isSwitchedAny1, !isSwitchedAll1)
+                        }
+                    }
+                    RMTristateSwitch.STATE_RIGHT -> adapter.switchedOnAll()
+                }
+                adapter.notifyDataSetChanged()
+            }
+
+            commonSwitch.addSwitchObserver { switchView, _ ->
+                val isSwitchedAny1: Boolean =
+                    adapter.items.filterIsInstance<RecyclerViewItems.Layers>().any { it.switchSave }
+                val isSwitchedAll1: Boolean =
+                    adapter.items.filterIsInstance<RecyclerViewItems.Layers>().all { it.switchSave }
+                if (!indirectSwitched) {
+                    switchFun(switchView, isSwitchedAny1, isSwitchedAll1)
+                }
             }
         }
 
@@ -381,6 +437,7 @@ class MainFragment : Fragment(), RecyclerAdapter.Listener, SearchView.OnQueryTex
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -391,6 +448,7 @@ class MainFragment : Fragment(), RecyclerAdapter.Listener, SearchView.OnQueryTex
     }
 
     private fun setupDrawerLayout() {
+        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
         val actionBarDrawerToggle =
             ActionBarDrawerToggle(
                 requireActivity(),
@@ -401,5 +459,17 @@ class MainFragment : Fragment(), RecyclerAdapter.Listener, SearchView.OnQueryTex
         binding.drawerLayout.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
         (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            if (binding.drawerLayout.isDrawerOpen(GravityCompat.END)) {
+                binding.drawerLayout.closeDrawer(GravityCompat.END)
+            } else {
+                binding.drawerLayout.openDrawer(GravityCompat.END)
+            }
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
