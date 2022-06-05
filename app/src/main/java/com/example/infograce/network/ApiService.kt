@@ -14,8 +14,6 @@ interface ApiService {
         @Query(QUERY_ACCESS_TOKEN) access_token: String = QUERY_DEFAULT_ACCESS_TOKEN,
     ): List<TilesetsItemDTO>
 
-
-
     companion object {
         private const val QUERY_ACCESS_TOKEN = "access_token"
         private const val QUERY_DEFAULT_ACCESS_TOKEN = "sk.eyJ1IjoiYXptZXRvdiIsImEiOiJjbDNxMGowYmMxMGNtM2tsbm12c2Q4aHllIn0.IvH_qCin0TJZIV_mf_KB4A"

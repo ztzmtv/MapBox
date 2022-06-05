@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -19,11 +18,11 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.GravityCompat
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.infograce.dataClass.AddLayer
-import com.example.infograce.dataClass.DataSource
 import com.example.infograce.dataClass.RecyclerViewItems
 import com.example.infograce.dataClass.models.MapStyle
 import com.example.infograce.databinding.FragmentMainBinding
@@ -53,14 +52,13 @@ import com.mapbox.maps.plugin.locationcomponent.OnIndicatorBearingChangedListene
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener
 import com.mapbox.maps.plugin.locationcomponent.location
 import com.rm.rmswitch.RMTristateSwitch
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 
 
 class MainFragment : Fragment(), RecyclerAdapter.Listener, SearchView.OnQueryTextListener,
     GestureCallbacks {
     private val itemTouchHelper = ItemTouchHelper(ItemTouchHelperCallback(this))
+    private val viewModel by lazy { ViewModelProvider(this)[MainViewModel::class.java] }
     private val adapter by lazy { RecyclerAdapter(this, this) }
     private val binding by lazy { FragmentMainBinding.inflate(layoutInflater) }
     private val mapboxMap by lazy { mapView.getMapboxMap() }
@@ -327,8 +325,9 @@ class MainFragment : Fragment(), RecyclerAdapter.Listener, SearchView.OnQueryTex
     }
 
     private fun addDataSet() {
-        val data = DataSource.createDataSet()
-        adapter.submitList(data)
+        viewModel.itemsListLiveData.observe(viewLifecycleOwner){
+            adapter.submitList(it)
+        }
     }
 
     private fun addLayer() {
