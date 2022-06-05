@@ -1,8 +1,11 @@
 package com.example.infograce.dataClass
 
+import android.graphics.Color
 import com.example.infograce.R
 import com.example.infograce.dataClass.models.Layer
 import com.example.infograce.dataClass.models.Source
+import java.util.*
+import kotlin.collections.ArrayList
 
 class DataSource {
     companion object {
@@ -47,9 +50,9 @@ class DataSource {
                     data = Layer(
                         layerId = "CTR",
                         sourceLayer = "CTR",
-                        fillColor = 76576,
+                        fillColor = getRandomColor(),
                         fillOpacity = 0.5,
-                        fillOutlineColor = 23423,
+                        fillOutlineColor = getRandomColor(),
                         source = Source(
                             sourceId = "1e6rib3l",
                             url = "mapbox://azmetov.1e6rib3l"
@@ -57,6 +60,49 @@ class DataSource {
                     )
                 )
             )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("CTA__"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "CTA__",
+                        sourceLayer = "CTA__",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "1e6rib3l",
+                            url = "mapbox://azmetov.1e6rib3l"
+                        )
+                    )
+                )
+            )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable(".geojson"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = ".geojson",
+                        sourceLayer = ".geojson",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "1e6rib3l",
+                            url = "mapbox://azmetov.1e6rib3l"
+                        )
+                    )
+                )
+            )
+
 //            list.add(
 //                RecyclerViewItems.Layers(
 //                    R.drawable.waypoint,
@@ -166,6 +212,13 @@ class DataSource {
 //            )
             return list
         }
-    }
 
+        private fun getRandomColor() =
+            Color.argb(
+                255,
+                Random().nextInt(256),
+                Random().nextInt(256),
+                Random().nextInt(256)
+            )
+    }
 }
