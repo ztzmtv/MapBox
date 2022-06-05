@@ -36,7 +36,7 @@ class RecyclerAdapter(
     var queryText = ""
 
     var itemChangeListener: ((String, Float) -> Unit)? = null
-    var itemCreateListener: ((Layer) -> Unit)? = null
+    var itemCreateListener: ((RecyclerViewItems.Layers) -> Unit)? = null
     var itemVisibilityListener: ((Layer, Boolean) -> Unit)? = null
     var itemRemoveListener: ((String) -> Unit)? = null
     var itemMoveListener: ((String, String) -> Unit)? = null
@@ -63,7 +63,7 @@ class RecyclerAdapter(
             is RecyclerViewHolders.LayersViewHolder -> {
                 val currentItem = filteredItems[position]
                 if (currentItem is RecyclerViewItems.Layers) {
-                    itemCreateListener?.invoke(currentItem.data)
+                    itemCreateListener?.invoke(currentItem)
 
                     holder.bind(currentItem)
                     if (queryText.isNotEmpty()) {

@@ -25,7 +25,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.infograce.dataClass.AddLayer
 import com.example.infograce.dataClass.DataSource
 import com.example.infograce.dataClass.RecyclerViewItems
-import com.example.infograce.dataClass.models.Layer
 import com.example.infograce.dataClass.models.MapStyle
 import com.example.infograce.databinding.FragmentMainBinding
 import com.example.infograce.helper.LocationPermissionHelper
@@ -61,9 +60,7 @@ import java.lang.ref.WeakReference
 
 class MainFragment : Fragment(), RecyclerAdapter.Listener, SearchView.OnQueryTextListener,
     GestureCallbacks {
-
     private val itemTouchHelper = ItemTouchHelper(ItemTouchHelperCallback(this))
-    private lateinit var locationPermissionHelper: LocationPermissionHelper
     private val adapter by lazy { RecyclerAdapter(this, this) }
     private val binding by lazy { FragmentMainBinding.inflate(layoutInflater) }
     private val mapboxMap by lazy { mapView.getMapboxMap() }
@@ -73,6 +70,9 @@ class MainFragment : Fragment(), RecyclerAdapter.Listener, SearchView.OnQueryTex
     private var dragState: Boolean = false
     private var lastInput: String = ""
     private var currentStyle = MapStyle.SATELLITE
+    private val locationPermissionHelper by lazy {
+        LocationPermissionHelper(WeakReference(requireActivity()))
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -93,16 +93,16 @@ class MainFragment : Fragment(), RecyclerAdapter.Listener, SearchView.OnQueryTex
         enableLocation()
 
         val apiService = ApiFactory.apiService
-        MainScope().launch {
-            val a = apiService.getListOfTilesets().filter {
-                it.type == "vector"
-            }
-            Log.d("TAG", "getListOfTilesets() $a")
-        }
+//        MainScope().launch {
+//            val a = apiService.getListOfTilesets().filter {
+//                it.type == "vector"
+//            }
+//            Log.d("TAG", "getListOfTilesets() $a")
+//        }
 
         with(adapter) {
             itemCreateListener = { layer ->
-                addSourceAndLayer(layer)
+                addSourceAndLayers(layer)
             }
 
             itemMoveListener = { fromId, toId ->
@@ -112,8 +112,8 @@ class MainFragment : Fragment(), RecyclerAdapter.Listener, SearchView.OnQueryTex
             }
 
             itemChangeListener = { layerId, value ->
-                mapboxMap.getStyle { style ->
-                    val layer = style.getLayerAs<FillLayer>(layerId)
+                mapboxMap.getStyle {
+                    val layer = it.getLayerAs<FillLayer>(layerId)
                     layer?.fillOpacity(value / 100.0)
                 }
             }
@@ -121,20 +121,18 @@ class MainFragment : Fragment(), RecyclerAdapter.Listener, SearchView.OnQueryTex
             itemVisibilityListener = { tilesetLayer, isChecked ->
                 mapboxMap.getStyle { style ->
                     style.getLayer(tilesetLayer.layerId)?.let { layer ->
-                        if (isChecked) {
+                        if (isChecked)
                             layer.visibility(Visibility.VISIBLE)
-                        } else {
+                        else
                             layer.visibility(Visibility.NONE)
-                        }
+
                     }
                 }
             }
 
             itemRemoveListener = { layerId ->
                 mapboxMap.getStyle { style ->
-                    if (style.styleLayerExists(layerId)) {
-                        style.removeStyleLayer(layerId)
-                    }
+                    if (style.styleLayerExists(layerId)) style.removeStyleLayer(layerId)
                 }
             }
         }
@@ -214,11 +212,12 @@ class MainFragment : Fragment(), RecyclerAdapter.Listener, SearchView.OnQueryTex
                     switchFun(switchView, isSwitchedAny1, isSwitchedAll1)
                 }
             }
+
             fabChangeStyle.setOnClickListener {
-                val itemsList = adapter.filteredItems
+                val itemsList = adapter.items
                 when (currentStyle) {
                     MapStyle.MAPBOX_STREETS -> mapboxMap.loadStyleUri(Style.MAPBOX_STREETS,
-                        { style ->
+                        {
                             currentStyle = MapStyle.SATELLITE
                             addSourcesAndLayers(itemsList)
                         },
@@ -285,39 +284,37 @@ class MainFragment : Fragment(), RecyclerAdapter.Listener, SearchView.OnQueryTex
         }
 
         binding.editSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 adapter.filter.filter(s)
             }
 
-            override fun afterTextChanged(s: Editable?) {
-            }
+            override fun afterTextChanged(s: Editable?) {}
         })
     }
 
     private fun addSourcesAndLayers(itemsList: MutableList<RecyclerViewItems>) {
         for (layer in itemsList)
             if (layer is RecyclerViewItems.Layers)
-                addSourceAndLayer(layer.data)
+                addSourceAndLayers(layer)
     }
 
-    private fun addSourceAndLayer(layer: Layer) {
+    private fun addSourceAndLayers(layer: RecyclerViewItems.Layers) {
         mapboxMap.getStyle {
-            if (it.getSource(layer.source.sourceId) == null)
+            if (it.getSource(layer.data.source.sourceId) == null)
                 it.addSource(
-                    vectorSource(layer.source.sourceId) {
-                        url(layer.source.url)
-                    }
+                    vectorSource(layer.data.source.sourceId) { url(layer.data.source.url) }
                 )
-            if (it.getLayer(layer.layerId) == null)
-                it.addLayer(fillLayer(layer.layerId, layer.source.sourceId) {
-                    sourceLayer(layer.sourceLayer)
-                    fillOpacity(layer.fillOpacity)
-                    fillColor(layer.fillColor)
-                    fillOutlineColor(layer.fillOutlineColor)
-                })
+            if (it.getLayer(layer.data.layerId) == null)
+                it.addLayer(
+                    fillLayer(layer.data.layerId, layer.data.source.sourceId) {
+                        sourceLayer(layer.data.sourceLayer)
+                        fillOpacity(layer.data.fillOpacity)
+                        fillColor(layer.data.fillColor)
+                        fillOutlineColor(layer.data.fillOutlineColor)
+                        visibility(if (layer.visibility) Visibility.VISIBLE else Visibility.NONE)
+                    })
         }
     }
 
@@ -389,7 +386,6 @@ class MainFragment : Fragment(), RecyclerAdapter.Listener, SearchView.OnQueryTex
     }
 
     private fun enableLocation() {
-        locationPermissionHelper = LocationPermissionHelper(WeakReference(requireActivity()))
         locationPermissionHelper.checkPermissions {
             onMapReady()
         }

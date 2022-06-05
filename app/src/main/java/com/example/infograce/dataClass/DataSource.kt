@@ -13,7 +13,7 @@ class DataSource {
             val list = ArrayList<RecyclerViewItems>()
             list.add(
                 RecyclerViewItems.LayersGroup(
-                    "Последние слои",
+                    "Зоны и районы",
                     "11.03.2022",
                     Group.BLUE
                 )
@@ -102,7 +102,576 @@ class DataSource {
                     )
                 )
             )
+            // Зоны ограничения полетов azmetov.6qrv5562
+            list.add(
+                RecyclerViewItems.LayersGroup(
+                    "Зоны ограничения полетов",
+                    "11.03.2022",
+                    Group.BLUE
+                )
+            )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("UA"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "UA",
+                        sourceLayer = "UA",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "6qrv5562",
+                            url = "mapbox://azmetov.6qrv5562"
+                        )
+                    )
+                )
+            )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("UH"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "UH",
+                        sourceLayer = "UH",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "6qrv5562",
+                            url = "mapbox://azmetov.6qrv5562"
+                        )
+                    )
+                )
+            )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("UK"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "UK",
+                        sourceLayer = "UK",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "6qrv5562",
+                            url = "mapbox://azmetov.6qrv5562"
+                        )
+                    )
+                )
+            )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("UL"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "UL",
+                        sourceLayer = "UL",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "6qrv5562",
+                            url = "mapbox://azmetov.6qrv5562"
+                        )
+                    )
+                )
+            )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("UM"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "UM",
+                        sourceLayer = "UM",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "6qrv5562",
+                            url = "mapbox://azmetov.6qrv5562"
+                        )
+                    )
+                )
+            )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("UN"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "UN",
+                        sourceLayer = "UN",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "6qrv5562",
+                            url = "mapbox://azmetov.6qrv5562"
+                        )
+                    )
+                )
+            )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("UR"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "UR",
+                        sourceLayer = "UR",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "6qrv5562",
+                            url = "mapbox://azmetov.6qrv5562"
+                        )
+                    )
+                )
+            )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("US"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "US",
+                        sourceLayer = "US",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "6qrv5562",
+                            url = "mapbox://azmetov.6qrv5562"
+                        )
+                    )
+                )
+            )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("UU"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "UU",
+                        sourceLayer = "UU",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "6qrv5562",
+                            url = "mapbox://azmetov.6qrv5562"
+                        )
+                    )
+                )
+            )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("UW"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "UW",
+                        sourceLayer = "UW",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "6qrv5562",
+                            url = "mapbox://azmetov.6qrv5562"
+                        )
+                    )
+                )
+            )
+                // Опасные зоны azmetov.0v8a3gs8
+            list.add(
+                RecyclerViewItems.LayersGroup(
+                    "Опасные зоны",
+                    "11.03.2022",
+                    Group.BLUE
+                )
+            )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("UA"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "UA",
+                        sourceLayer = "UA",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "0v8a3gs8",
+                            url = "mapbox://azmetov.0v8a3gs8"
+                        )
+                    )
+                )
+            )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("UH"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "UH",
+                        sourceLayer = "UH",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "0v8a3gs8",
+                            url = "mapbox://azmetov.0v8a3gs8"
+                        )
+                    )
+                )
+            )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("UK"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "UK",
+                        sourceLayer = "UK",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "0v8a3gs8",
+                            url = "mapbox://azmetov.0v8a3gs8"
+                        )
+                    )
+                )
+            )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("UL"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "UL",
+                        sourceLayer = "UL",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "0v8a3gs8",
+                            url = "mapbox://azmetov.0v8a3gs8"
+                        )
+                    )
+                )
+            )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("UM"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "UM",
+                        sourceLayer = "UM",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "0v8a3gs8",
+                            url = "mapbox://azmetov.0v8a3gs8"
+                        )
+                    )
+                )
+            )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("UR"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "UR",
+                        sourceLayer = "UR",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "0v8a3gs8",
+                            url = "mapbox://azmetov.0v8a3gs8"
+                        )
+                    )
+                )
+            )
+            list.add(
+                RecyclerViewItems.LayersGroup(
+                    "Запретные зоны",
+                    "11.03.2022",
+                    Group.BLUE
+                )
+            )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("UA"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "UA",
+                        sourceLayer = "UA",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "4dfspkho",
+                            url = "mapbox://azmetov.4dfspkho"
+                        )
+                    )
+                )
+            )
 
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("UH"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "UH",
+                        sourceLayer = "UH",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "4dfspkho",
+                            url = "mapbox://azmetov.4dfspkho"
+                        )
+                    )
+                )
+            )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("UK"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "UK",
+                        sourceLayer = "UK",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "4dfspkho",
+                            url = "mapbox://azmetov.4dfspkho"
+                        )
+                    )
+                )
+            )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("UL"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "UL",
+                        sourceLayer = "UL",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "4dfspkho",
+                            url = "mapbox://azmetov.4dfspkho"
+                        )
+                    )
+                )
+            )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("UM"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "UM",
+                        sourceLayer = "UM",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "4dfspkho",
+                            url = "mapbox://azmetov.4dfspkho"
+                        )
+                    )
+                )
+            )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("UN"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "UN",
+                        sourceLayer = "UN",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "4dfspkho",
+                            url = "mapbox://azmetov.4dfspkho"
+                        )
+                    )
+                )
+            )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("UR"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "UR",
+                        sourceLayer = "UR",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "4dfspkho",
+                            url = "mapbox://azmetov.4dfspkho"
+                        )
+                    )
+                )
+            )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("US"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "US",
+                        sourceLayer = "US",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "4dfspkho",
+                            url = "mapbox://azmetov.4dfspkho"
+                        )
+                    )
+                )
+            )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("UU"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "UU",
+                        sourceLayer = "UU",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "4dfspkho",
+                            url = "mapbox://azmetov.4dfspkho"
+                        )
+                    )
+                )
+            )
+            list.add(
+                RecyclerViewItems.Layers(
+                    icon = R.drawable.polygon,
+                    title = RecyclerViewItems.TitleSpannable("UW"),
+                    trans = "60%",
+                    elem = 241,
+                    zoom = "16-18",
+                    group = Group.RED,
+                    data = Layer(
+                        layerId = "UW",
+                        sourceLayer = "UW",
+                        fillColor = getRandomColor(),
+                        fillOpacity = 0.5,
+                        fillOutlineColor = getRandomColor(),
+                        source = Source(
+                            sourceId = "4dfspkho",
+                            url = "mapbox://azmetov.4dfspkho"
+                        )
+                    )
+                )
+            )
 //            list.add(
 //                RecyclerViewItems.Layers(
 //                    R.drawable.waypoint,
