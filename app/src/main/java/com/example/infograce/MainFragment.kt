@@ -2,6 +2,8 @@ package com.example.infograce
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -27,12 +29,13 @@ import com.example.infograce.dataClass.RecyclerViewItems
 import com.example.infograce.dataClass.models.MapStyle
 import com.example.infograce.databinding.FragmentMainBinding
 import com.example.infograce.helper.LocationPermissionHelper
-import com.example.infograce.network.ApiFactory
 import com.example.infograce.recyclerview.GestureCallbacks
 import com.example.infograce.recyclerview.ItemTouchHelperCallback
 import com.example.infograce.recyclerview.RecyclerAdapter
 import com.mapbox.android.gestures.MoveGestureDetector
-import com.mapbox.maps.*
+import com.mapbox.maps.CameraOptions
+import com.mapbox.maps.LayerPosition
+import com.mapbox.maps.Style
 import com.mapbox.maps.extension.observable.eventdata.MapLoadingErrorEventData
 import com.mapbox.maps.extension.style.expressions.dsl.generated.interpolate
 import com.mapbox.maps.extension.style.layers.addLayer
@@ -88,9 +91,10 @@ class MainFragment : Fragment(), RecyclerAdapter.Listener, SearchView.OnQueryTex
         super.onViewCreated(view, savedInstanceState)
 
         setupDrawerLayout()
+        setupToolbarMenu()
         enableLocation()
 
-        val apiService = ApiFactory.apiService
+//        val apiService = ApiFactory.apiService
 //        MainScope().launch {
 //            val a = apiService.getListOfTilesets().filter {
 //                it.type == "vector"
@@ -292,6 +296,15 @@ class MainFragment : Fragment(), RecyclerAdapter.Listener, SearchView.OnQueryTex
         })
     }
 
+    private fun setupToolbarMenu() {
+        setHasOptionsMenu(true)
+        val colorFilter = PorterDuffColorFilter(
+            requireContext().getColor(R.color.white),
+            PorterDuff.Mode.SRC_ATOP
+        )
+        binding.toolbar.navigationIcon?.colorFilter = colorFilter
+    }
+
     private fun addSourcesAndLayers(itemsList: MutableList<RecyclerViewItems>) {
         for (layer in itemsList)
             if (layer is RecyclerViewItems.Layers)
@@ -325,7 +338,7 @@ class MainFragment : Fragment(), RecyclerAdapter.Listener, SearchView.OnQueryTex
     }
 
     private fun addDataSet() {
-        viewModel.itemsListLiveData.observe(viewLifecycleOwner){
+        viewModel.itemsListLiveData.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
     }
